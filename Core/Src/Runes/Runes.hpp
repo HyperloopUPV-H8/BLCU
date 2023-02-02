@@ -28,6 +28,7 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 SPI_HandleTypeDef hspi3;
 FDCAN_HandleTypeDef hfdcan1;
+FDCAN_HandleTypeDef hfdcan3;
 
 
 /************************************************
@@ -39,7 +40,7 @@ FDCAN_HandleTypeDef hfdcan1;
 extern FDCAN_HandleTypeDef hfdcan1;
 
 FDCAN::Instance FDCAN::instance1 = { .TX = PD1, .RX = PD0, .hfdcan = &hfdcan1,
-									 .instance = FDCAN1, .dlc = DLC::BYTES_64,
+									 .instance = FDCAN1, .dlc = DLC::BYTES_8,
 									 .rx_location = FDCAN_RX_FIFO0, .fdcan_number = 1
 									};
 
