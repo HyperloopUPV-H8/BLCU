@@ -8,8 +8,9 @@
 #include "FDCBootloader/FDCBootloader.hpp"
 
 uint8_t FDCB::fdcan = 0;
-
 bool FDCB::ready = false;
+vector<uint8_t> FDCB::empty_data = vector<uint8_t>(64, 0);
+
 
 void FDCB::set_up(uint8_t fdcan){
 	FDCB::fdcan = fdcan;
@@ -18,19 +19,24 @@ void FDCB::set_up(uint8_t fdcan){
 }
 
 bool FDCB::get(vector<uint8_t> &res){
-	if (!FDCAN::transmit(fdcan, FDCB::Orders::GET, {}, FDCAN::DLC::BYTES_64))
+	if (!FDCAN::transmit(fdcan, FDCB::Orders::GET, FDCB::empty_data, FDCAN::DLC::BYTES_64)){
 		return false;
+	}
 
 
-	if(!FDCB::__wait_for_bootloader_command_response(res))
+
+	if(!FDCB::__wait_for_bootloader_command_response(res)){
+
 		return false;
+	}
+
 
 
 	return true;
 }
 
 bool FDCB::get_version(uint32_t& res){
-	if (!FDCAN::transmit(fdcan, FDCB::Orders::GET_VERSION, {}, FDCAN::DLC::BYTES_64))
+	if (!FDCAN::transmit(fdcan, FDCB::Orders::GET_VERSION, FDCB::empty_data, FDCAN::DLC::BYTES_64))
 			return false;
 
 	vector<uint8_t> v = {};
@@ -44,7 +50,7 @@ bool FDCB::get_version(uint32_t& res){
 
 
 bool FDCB::get_id(uint32_t& res){
-	if (!FDCAN::transmit(fdcan, FDCB::Orders::GET_ID, {}, FDCAN::DLC::BYTES_64))
+	if (!FDCAN::transmit(fdcan, FDCB::Orders::GET_ID, FDCB::empty_data, FDCAN::DLC::BYTES_64))
 		return false;
 
 	vector<uint8_t> v = {};
@@ -81,7 +87,7 @@ bool FDCB::read_memory(vector<uint8_t>& res, uint32_t address, uint32_t byte_cou
 	return true;
 }
 
-bool FDCB::exit_bootloader(uint32_t& address){
+bool FDCB::go_to(const uint32_t& address){
 	vector<uint8_t> v = {};
 	FDCB::__addr_to_byte_vector(v, address);
 
@@ -221,20 +227,26 @@ bool FDCB::__wait_for_bootloader_command_response(vector<uint8_t>& data){
 }
 
 optional<FDCAN::Packet> FDCB::__wait_for_bootloader_message(uint8_t match_first_byte){
-	bool exit = false;
+	bool exit = true;
 
 	FDCAN::Packet packet = {};
-
+	Time::set_timeout(TIMOUT_MS, [&](){exit = false;printf("Si que salto \n");});
 	while(exit){
-		Time::set_timeout(TIMOUT_MS, [&](){exit = true;});
 
-		FDCAN::wait_and_read(fdcan, &packet);
+		printf("Bucle %u \n", exit);
+		if (not FDCAN::wait_and_read(fdcan, &packet, exit)) {
+			return nullopt;
+		}
 
 		if ((match_first_byte == NONE) or (packet.rx_data[0] == match_first_byte))
 			return packet;
 	}
 
 	//TODO: WARNING ErrorHandler("Timeout time exceeded waiting the next FDCAN message.", "");
+	#if VERBOSE_LEVEL == 1
+			printf("Error: Time exceed waiting for the next FDCAN message | \n");
+
+	#endif
 	return nullopt;
 }
 

@@ -384,6 +384,7 @@ NVIC.FDCAN1_IT0_IRQn=true\:0\:0\:false\:false\:true\:true\:true\:true
 NVIC.FDCAN1_IT1_IRQn=true\:0\:0\:false\:false\:true\:true\:true\:true
 NVIC.FDCAN3_IT0_IRQn=true\:0\:0\:false\:false\:true\:true\:true\:true
 NVIC.FDCAN3_IT1_IRQn=true\:0\:0\:false\:false\:true\:true\:true\:true
+NVIC.FDCAN_CAL_IRQn=true\:0\:0\:false\:false\:true\:true\:true\:true
 NVIC.ForceEnableDMAVector=true
 NVIC.HardFault_IRQn=true\:0\:0\:false\:false\:true\:false\:false\:false
 NVIC.LPTIM1_IRQn=true\:0\:0\:false\:false\:true\:true\:true\:true

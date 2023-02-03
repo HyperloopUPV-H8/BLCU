@@ -5,42 +5,44 @@
 #include "PinModel/Pin.hpp"
 #include "Runes/Runes.hpp"
 #include "FDCBootloader/FDCBootloader.hpp"
+#include "BLCU/BLCU.hpp"
+#include "Examples/examples_includes.hpp"
+
 extern struct netif gnetif;
 
 int main(void)
 {
-	optional<uint8_t> fdcan = FDCAN::inscribe(FDCAN::fdcan1);
+	//optional<uint8_t> fdcan =  FDCAN::inscribe(FDCAN::fdcan1);
+	DigitalOutput LED_OPERATIONAL = DigitalOutput(PG8);
+//
+//	if (not fdcan.has_value()) {
+//		ErrorHandler("Unable to inscribe pin");
+//	}
+//
+//	BLCU blcu = BLCU(fdcan.value());
+//	blcu.add_boots();
+//	blcu.add_resets();
 
-	if (not fdcan.has_value()) {
-		ErrorHandler("Unable to inscribe fdcan");
-	}
+	STLIB::start(Board);
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
-	STLIB::start(Board, "192.168.1.4", "255.255.0.0", "192.168.1.1", UART::uart2);
-	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-	std::vector<uint8_t> v = {1, 2, 3, 4, 5, 0x69, 0x43};
+	LED_OPERATIONAL.turn_on();
 
-	FDCAN::Packet packet = FDCAN::Packet(v, 0x68, FDCAN::DLC::BYTES_8);
-	uint32_t counter = 0;
+//	blcu.send_to_bootmode(BLCU::Master);
+
+//	uint32_t id = 69;
+//
+//	bool res = blcu.get_board_id(id);
+//	printf("Ger borad %u | ", res);
+//
+//    bool res2 = blcu.exit_bootmode();
+//	printf("Ger exit %u | ", res2);
+//
+//
+//	printf("Id = %lu |  \n", id);
 	while (1) {
-		FDCAN::transmit(fdcan.value(), 0x69, v, FDCAN::DLC::BYTES_8);
 
-		if (FDCAN::received_test(fdcan.value())) {
-			FDCAN::read(fdcan.value(), &packet);
-
-			printf("Packet received %lu | Id = %lu, Data =", counter, packet.identifier);
-			for (auto v : packet.rx_data) {
-				printf(" %x ", v);
-			}
-			printf("| \r");
-
-			counter++;
-		}
-		string pin = "PF0";
-		printf("Pint %s \n", PA0.to_string().c_str());
-
-		ErrorHandlerModel::ErrorHandlerUpdate();
-
-		HAL_Delay(100);
+		//ErrorHandlerModel::ErrorHandlerUpdate();
 	}
 
 }

@@ -12,8 +12,8 @@
 #include "C++Utilities/CppUtils.hpp"
 
 
-#define VERBOSE False
-#define TIMOUT_MS 200
+#define VERBOSE_LEVEL 1
+#define TIMOUT_MS 2000
 #define NONE 0xFF
 
 //Dependencias, TIM START
@@ -43,6 +43,7 @@ private:
 	};
 
 	static uint8_t fdcan;
+	static vector<uint8_t> empty_data;
 
 	static bool ready;
 public:
@@ -65,7 +66,7 @@ public:
 	static bool read_memory(vector<uint8_t>& res, uint32_t address, uint32_t byte_count = 64);
 
 	/*The Exit command is used to execute downloaded code .*/
-	static bool exit_bootloader(uint32_t& address);
+	static bool go_to(const uint32_t& address);
 
 	/*The Write Memory command is used to write data to any valid memory address of the RAM, flash memory,
 	or option byte area. */
