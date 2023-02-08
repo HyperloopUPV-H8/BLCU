@@ -12,39 +12,14 @@ extern struct netif gnetif;
 
 int main(void)
 {
-	//optional<uint8_t> fdcan =  FDCAN::inscribe(FDCAN::fdcan1);
-	DigitalOutput LED_OPERATIONAL = DigitalOutput(PG8);
-//
-//	if (not fdcan.has_value()) {
-//		ErrorHandler("Unable to inscribe pin");
-//	}
-//
-//	BLCU blcu = BLCU(fdcan.value());
-//	blcu.add_boots();
-//	blcu.add_resets();
 
-	STLIB::start(Board);
-	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	BLCU::set_up();
+	BLCU::start();
 
-	LED_OPERATIONAL.turn_on();
 
-//	blcu.send_to_bootmode(BLCU::Master);
-
-//	uint32_t id = 69;
-//
-//	bool res = blcu.get_board_id(id);
-//	printf("Ger borad %u | ", res);
-//
-//    bool res2 = blcu.exit_bootmode();
-//	printf("Ger exit %u | ", res2);
-//
-//
-//	printf("Id = %lu |  \n", id);
 	while (1) {
-
-		//ErrorHandlerModel::ErrorHandlerUpdate();
+		BLCU::update();
 	}
-
 }
 
 void Error_Handler(void)

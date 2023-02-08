@@ -1,4 +1,4 @@
-/*
+/**
  * BLCU.h
  *
  *  Created on: Feb 3, 2023
@@ -13,58 +13,70 @@
 
 class BLCU {
 public:
-	enum Target{
-		Master,
-	};
+    enum Target{
+        Master,
+        NOTARGET,
+    };
 
+    enum GeneralStates{
+        READY,
+        BOOTING,
+        FAULT,
+    };
+
+private:
+    static StateMachine blcu_state_machine;
+
+    static unordered_map<Target, DigitalOutput> resets;
+    static unordered_map<Target, DigitalOutput> boots;
+
+    static uint8_t fdcan;
+    static DigitalOutput LED_OPERATIONAL;
+    static DigitalOutput LED_FAULT;
+    static DigitalOutput LED_CAN;
+    static DigitalOutput LED_FLASH;
+    static DigitalOutput LED_SLEEP;
+
+    static Target current_target;
+
+    static string ip, mask, gateway;
 public:
-	unordered_map<Target, DigitalOutput> resets;
-	unordered_map<Target, DigitalOutput> boots;
 
-	uint8_t fdcan;
-	bool boot_mode = false;
+    static void reset_all();
 
+    static void force_quit_bootmode(const Target& target);
 
-	BLCU(uint8_t fdcan) : fdcan(fdcan){
-		FDCB::set_up(fdcan);
-	}
+    static void get_id(const Target& target);
 
-	void add_resets(){
-		resets[Master] = DigitalOutput(PA12);
-		//...
-	}
+    static void read(const Target& target, const uint32_t& address, const uint32_t& size);
 
-	void add_boots(){
-		boots[Master] = DigitalOutput(PA11);
-		//...
-	}
+    static void write(const Target& target, span<uint8_t> data);
 
-	void send_to_bootmode(Target target){
-		boots[target].turn_on();
-		resets[target].turn_off();
-		int i;
-		for (i = 0; i < 10000000; ++i) {
-			__NOP();
-		}
-		resets[target].turn_on();
-		boots[target].turn_off();
+    static void erase_all();
 
-		boot_mode = true;
-	}
+    static void set_up(string ip = "192.168.1.4", string mask = "255.255.0.0", string gateway = "192.168.1.1");
 
-	bool exit_bootmode(){
-		bool res = FDCB::go_to(0x8000000);
+    static void start();
 
-		if (res) {
-			boot_mode = false;
-			return res;
-		}
+    static void update();
 
-		return res;
-	}
+private:
+    static void set_up_peripherals();
 
-	bool get_board_id(uint32_t& id){
-		return FDCB::get_id(id);
-	}
+    static void set_up_state_machine();
+
+    static void set_up_resets();
+
+    static void set_up_boots();
+
+    static void set_up_leds();
+
+    static void resets_start();
+
+    static void boots_start();
+
+    static void leds_start();
+
+    static void send_to_bootmode(Target target);
 
 };
