@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Bootloader/bootloader_includes.hpp"
 #include "adc_example.hpp"
 #include "input_capture_example.hpp"
 #include "protection_manager.hpp"
@@ -13,4 +14,5 @@
 #include "halfbridge_example.hpp"
 #include "leds_example.hpp"
 #include "blcu_boots_and_resets.hpp"
+
 
