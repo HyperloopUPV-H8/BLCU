@@ -290,10 +290,13 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
   TxConfig.TxBuffer = Txbuffer;
   TxConfig.pData = p;
 
-  HAL_ETH_Transmit(&heth, &TxConfig, ETH_DMA_TRANSMIT_TIMEOUT);
+  SCB_CleanInvalidateDCache_by_Addr(p->payload, p->len);
+
+  HAL_ETH_Transmit(&heth, &TxConfig, 0);
 
   return errval;
 }
+
 
 /**
  * @brief Should allocate a pbuf and transfer the bytes of the incoming
@@ -606,11 +609,13 @@ int32_t ETH_PHY_IO_ReadReg(uint32_t DevAddr, uint32_t RegAddr, uint32_t *pRegVal
 {
   if(HAL_ETH_ReadPHYRegister(&heth, DevAddr, RegAddr, pRegVal) != HAL_OK)
   {
+    HAL_NVIC_SystemReset();
     return -1;
   }
 
   return 0;
 }
+
 
 /**
   * @brief  Write a value to a PHY register through the MDIO interface.
@@ -623,11 +628,13 @@ int32_t ETH_PHY_IO_WriteReg(uint32_t DevAddr, uint32_t RegAddr, uint32_t RegVal)
 {
   if(HAL_ETH_WritePHYRegister(&heth, DevAddr, RegAddr, RegVal) != HAL_OK)
   {
+    HAL_NVIC_SystemReset();
     return -1;
   }
 
   return 0;
 }
+
 
 /**
   * @brief  Get the time in millisecons used for internal PHY driver process.
