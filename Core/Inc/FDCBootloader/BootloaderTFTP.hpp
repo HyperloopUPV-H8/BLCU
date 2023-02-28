@@ -50,6 +50,8 @@ private:
 	static int read(void* handle, void* buf, int bytes);
 
 	static int write(void* handle, struct pbuf* p);
+
+	static void re(void* handle);
 };
 
 //#endif
