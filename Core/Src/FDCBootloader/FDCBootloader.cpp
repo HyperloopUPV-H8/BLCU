@@ -164,18 +164,19 @@ bool FDCB::__send_nack(uint8_t order){
 bool FDCB::__wait_for_bootloader_message(){
      bool exit = true;
 
-     //TODO: ARREGLAR LOS TIMEOUTS *MUY IMPORTANTE*
-//     Time::set_timeout(FDCB_TIMOUT_MS, [&](){
-//    	exit = false;
-//     });
+ 	uint8_t id = Time::register_low_precision_alarm(FDCB_TIMOUT_MS, [&](){
+ 		exit = false;
+ 		printf("Salto!\n");
+ 	});
 
      while(exit){
-
     	 if (FDCAN::received_test(fdcan)) {
+    		 Time::unregister_low_precision_alarm(id);
 			return true;
     	 }
      }
 
+     Time::unregister_low_precision_alarm(id);
      //TODO:: Warning timeout
      return false;
 }

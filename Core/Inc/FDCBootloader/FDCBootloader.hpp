@@ -13,7 +13,7 @@
 
 
 #define FDCB_VERBOSE_LEVEL 			1
-#define FDCB_TIMOUT_MS 				3000
+#define FDCB_TIMOUT_MS 				1000
 #define FDCB_FIRST_BYTE_NONE 		0xFF
 
 #define FDCB_ACK  					((uint8_t)0x79)
