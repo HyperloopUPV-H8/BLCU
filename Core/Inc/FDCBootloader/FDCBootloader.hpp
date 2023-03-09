@@ -59,7 +59,7 @@ public:
 	static bool erase_memory();
 
 private:
-	static bool __wait_for_data_message(uint8_t order, FDCAN::Packet* packet);
+	static bool __wait_for_data_message(uint8_t order, FDCAN::Packet& packet);
 	static bool __wait_for_ack(uint8_t order, FDCAN::Packet& packet);
 	static bool __wait_for_bootloader_message();
 	static void __copy_data_from_packet(FDCAN::Packet& packet, uint8_t* data);

@@ -32,7 +32,7 @@ bool FDCB::get_version(uint8_t& version){
 		return false;
 	}
 
-	if (not __wait_for_data_message(FDCB::GET_VERSION, &packet)) {
+	if (not __wait_for_data_message(FDCB::GET_VERSION, packet)) {
 		return false;
 	}
 	version = packet.rx_data[0];
@@ -67,7 +67,7 @@ bool FDCB::read_memory(uint8_t sector, uint8_t* data){
 	index = 0;
 	counter = 0;
 	for (i = 0; i < 2048; ++i) {
-		if(not FDCB::__wait_for_data_message(FDCB::READ_MEMORY, &packet)) {
+		if(not FDCB::__wait_for_data_message(FDCB::READ_MEMORY, packet)) {
 			return false;
 		}
 
@@ -117,16 +117,16 @@ bool FDCB::erase_memory(){
 //				Private functions
 //*******************************************************
 
-bool FDCB::__wait_for_data_message(uint8_t order, FDCAN::Packet* packet){
+bool FDCB::__wait_for_data_message(uint8_t order, FDCAN::Packet& packet){
 	if (not __wait_for_bootloader_message()) {
 		return false;
 	}
 
-	if (not FDCAN::read(fdcan, packet)) {
+	if (not FDCAN::read(fdcan, &packet)) {
 		return false;
 	}
 
-	if (packet->identifier != order) {
+	if (packet.identifier != order) {
 		return false;
 	}
 
@@ -134,7 +134,6 @@ bool FDCB::__wait_for_data_message(uint8_t order, FDCAN::Packet* packet){
 }
 
 bool FDCB::__wait_for_ack(uint8_t order, FDCAN::Packet& packet){
-
 	if (not __wait_for_bootloader_message()) {
 		return false;
 	}
