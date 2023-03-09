@@ -335,6 +335,7 @@ recv(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16
 
       blknum = lwip_ntohs(sbuf[1]);
       if (blknum != tftp_state.blknum) {
+    	  //Comentario: Ñapita para que vuelva a mandar el paquete anterior. (Arreglo sin ninguna garantia)
     	  tftp_state.blknum--;
     	  tftp_state.ctx->re(tftp_state.handle);
       }

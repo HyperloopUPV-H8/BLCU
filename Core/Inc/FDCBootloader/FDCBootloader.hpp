@@ -12,17 +12,17 @@
 #include "C++Utilities/CppUtils.hpp"
 
 
-#define VERBOSE_LEVEL 1
-#define TIMOUT_MS 2000
-#define FDCB_FIRST_BYTE_NONE 0xFF
+#define FDCB_VERBOSE_LEVEL 			1
+#define FDCB_TIMOUT_MS 				3000
+#define FDCB_FIRST_BYTE_NONE 		0xFF
 
-//Dependencias, TIM START
-//				PIN START
-//				PRINTF setUP
-//				UART START
-//				FDCAN inscribe
-//				FDCAN START
+#define FDCB_ACK  					((uint8_t)0x79)
+#define FDCB_NACK					((uint8_t)0x1f)
 
+#define SECTOR_SIZE_IN_32BITS_WORDS  ((uint16_t)32768U)
+#define SECTOR_SIZE_IN_FDCAN_PACKETS ((uint16_t)2048U)
+
+#define FDCB_BLOCK_SIZE				((uint8_t)8U)
 
 class FDCB{
 public:
@@ -33,80 +33,42 @@ public:
 	};
 private:
 	enum BootLoaderOrders{
-	    ACK                 = 0x79,
-	    NACK                = 0x1f,
-	    GET                 = 0x00,
-	    GET_VERSION         = 0x01,
-	    GET_ID              = 0x02,
-	    READ_MEMORY         = 0x11,
-	    WRITE_MEMORY        = 0x31,
-	    ERASE_MEMORY        = 0x44,
-	    WRITE_PROTECT       = 0x63,
-	    WRITE_UNPROTECT     = 0x73,
-	    READOUT_PROTECT     = 0x82,
-	    READOUT_UNPROTECT   = 0x92,
-	    GO                  = 0x21,
+	    GET_VERSION         = 0x50,
+	    READ_MEMORY         = 0x40,
+	    WRITE_MEMORY        = 0x30,
+	    ERASE_MEMORY        = 0x20,
+	    GO                  = 0x10,
 	};
 
 
 
 	static uint8_t fdcan;
-	static vector<uint8_t> empty_data;
-
 	static bool ready;
-
-	static StateMachine fdcb_state_machine;
 
 public:
 
-	static void set_up(uint8_t fdcan);
+	static void set_up(FDCAN::Peripheral& fdcan);
 
-	static void send_order(BootLoaderOrders order = FDCB::NACK);
+	static bool get_version(uint8_t& version);
 
-	static void update();
+	//Data tiene que tener 131072 bytes alocados
+	static bool read_memory(uint8_t sector, uint8_t* data);
 
-	static FDCB_State get_state();
+	static bool write_memory();
+
+	static bool erase_memory();
 
 private:
-	// /*The Get command allows the host to get the version of the bootloader and the supported commands. When the
-	// bootloader receives the Get command, it transmits the bootloader version and the supported command codes to
-	// the host.*/
-	// static bool get(vector<uint8_t>& res);
+	static bool __wait_for_data_message(uint8_t order, FDCAN::Packet* packet);
+	static bool __wait_for_ack(uint8_t order, FDCAN::Packet& packet);
+	static bool __wait_for_bootloader_message();
+	static void __copy_data_from_packet(FDCAN::Packet& packet, uint8_t* data);
+	static bool __send_ack(uint8_t order);
+	static bool __send_nack(uint8_t order);
 
-	// /*The Get Version command is used to get the bootloader version.*/
-	// static bool get_version(uint32_t& res);
 
-	// /*The Get ID command is used to get the version of the STM32 product ID (identification). */
-	// static bool get_id(uint32_t& res);
+	 static bool __write_memory_order(uint32_t address, vector<uint8_t> data);
+	 static bool __wait_for_bootloader_command_response(vector<uint8_t>& data);
 
-	// /*The Read Memory command is used to read data from any valid memory address: RAM, flash memory, and
-	// information block (system memory or option byte areas).*/
-	// static bool read_memory(vector<uint8_t>& res, uint32_t address, uint32_t byte_count = 64);
-
-	// /*The Exit command is used to execute downloaded code .*/
-	// static bool go_to(const uint32_t& address);
-
-	// /*The Write Memory command is used to write data to any valid memory address of the RAM, flash memory,
-	// or option byte area. */
-	// static bool write_memory(uint32_t address, vector<uint8_t>& data);
-
-	// /*The Erase Memory command allows the host to erase flash memory pages.*/
-	// static bool erase_memory();
-
-	// /*The Write Protect command is used to enable the write protection for some or all flash memory sectors.*/
-	// static bool write_protect();
-
-	// /*The Write Unprotect command is used to disable the write protection of all the flash memory sectors. */
-	// static bool write_unprotect();
-
-	// /*The Readout Protect command is used to enable the flash memory readout protection*/
-	// static bool readout_protect();
-
-	// /*The Readout Unprotect command is used to disable the flash memory readout protection.*/
-	// static bool readout_unprotect();
-
-	// static bool __write_memory_order(uint32_t address, vector<uint8_t> data);
-	// static bool __wait_for_bootloader_command_response(vector<uint8_t>& data);
-	// static optional<FDCAN::Packet> __wait_for_bootloader_message(uint8_t match_first_byte = FDCB_FIRST_BYTE_NONE);
-	// static void __addr_to_byte_vector(vector<uint8_t>& v, uint32_t addr);
+	 static void __addr_to_byte_vector(vector<uint8_t>& v, uint32_t addr);
 };

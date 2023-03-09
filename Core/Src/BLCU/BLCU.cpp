@@ -85,44 +85,44 @@ void BLCU::set_up_peripherals(){
 }
 
 void BLCU::set_up_state_machine(){
-    blcu_state_machine = StateMachine(READY);
-    blcu_state_machine.add_state(BOOTING);
-
-    blcu_state_machine.add_transition(BOOTING, READY, [](){
-        if (FDCB::get_state() == FDCB::FDCB_State::READY)
-        {
-            return true;
-        }
-        return false;
-    });
-
-    blcu_state_machine.add_transition(READY, FAULT, [&](){
-        if(ErrorHandlerModel::error_triggered != 0){
-            return true;
-        }
-        return false;
-    });
-
-    blcu_state_machine.add_transition(BOOTING, FAULT, [&](){
-        if(ErrorHandlerModel::error_triggered != 0){
-            force_quit_bootmode(current_target);
-            return true;
-        }
-        return false;
-    });
-
-    blcu_state_machine.add_enter_action([&](){
-        LED_FLASH.turn_on();
-    }, BOOTING);
-
-    blcu_state_machine.add_exit_action([&](){
-        LED_FLASH.turn_off();
-    }, BOOTING);
-
-    blcu_state_machine.add_enter_action([&](){
-        LED_OPERATIONAL.turn_off();
-        LED_FAULT.turn_on();
-    }, FAULT);
+//    blcu_state_machine = StateMachine(READY);
+//    blcu_state_machine.add_state(BOOTING);
+//
+//    blcu_state_machine.add_transition(BOOTING, READY, [](){
+//        if (FDCB::get_state() == FDCB::FDCB_State::READY)
+//        {
+//            return true;
+//        }
+//        return false;
+//    });
+//
+//    blcu_state_machine.add_transition(READY, FAULT, [&](){
+//        if(ErrorHandlerModel::error_triggered != 0){
+//            return true;
+//        }
+//        return false;
+//    });
+//
+//    blcu_state_machine.add_transition(BOOTING, FAULT, [&](){
+//        if(ErrorHandlerModel::error_triggered != 0){
+//            force_quit_bootmode(current_target);
+//            return true;
+//        }
+//        return false;
+//    });
+//
+//    blcu_state_machine.add_enter_action([&](){
+//        LED_FLASH.turn_on();
+//    }, BOOTING);
+//
+//    blcu_state_machine.add_exit_action([&](){
+//        LED_FLASH.turn_off();
+//    }, BOOTING);
+//
+//    blcu_state_machine.add_enter_action([&](){
+//        LED_OPERATIONAL.turn_off();
+//        LED_FAULT.turn_on();
+//    }, FAULT);
 
 
 }

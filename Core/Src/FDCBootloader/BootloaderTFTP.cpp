@@ -29,6 +29,10 @@ void BTFTP::start(){
 	const tftp_context* context = new tftp_context(&BTFTP::open, &BTFTP::close, &BTFTP::read, &BTFTP::write, &BTFTP::re);
 	err_t error = tftp_init(context);
 
+	//TODO: estaria bien comprobar antes que no esta ya ready
+	//		ya sea aqui o denstro del set_up
+
+
 	if (error != ERR_OK) {
 		ErrorHandler("Unable to start TFTP server, error code: %lu.", error);
 	}
@@ -45,11 +49,13 @@ void* BTFTP::open(const char* fname, const char* mode, u8_t write){
 //	}
 
 	const char* accepted_mode = "octet";
-//	if (not strcmp(mode, accepted_mode)) {
-//		return nullptr;
-//	}
+	printf("Modo seleccionado: %s \ %s\n", mode, accepted_mode);
+	if (strcmp(mode, accepted_mode)) {
+		return nullptr;
+	}
 
-	BTFTP::BHandle* handle = new BTFTP::BHandle(string(fname), string(mode), write, 0x08000000);
+	uint32_t address = FLASH_SECTOR0_START_ADDRESS;
+	BTFTP::BHandle* handle = new BTFTP::BHandle(string(fname), string(mode), write, address);
 
 	return handle;
 }
@@ -64,24 +70,25 @@ int BTFTP::read(void* handle, void* buf, int bytes){
 	BTFTP::BHandle* btftp_handle = (BTFTP::BHandle*)handle;
 
 	uint16_t size = 0;
-	if (btftp_handle->max_addr - btftp_handle->address > 512) {
-		size = 512 / 8;
+	if ((btftp_handle->max_addr - btftp_handle->address) > TFTP_MAX_DATA_SIZE) {
+		size = TFTP_MAX_DATA_SIZE;
 	}else{
-		size = (btftp_handle->max_addr - btftp_handle->address) / 8;
+		size = (btftp_handle->max_addr - btftp_handle->address);
 	}
 
-	Flash::read(btftp_handle->address, (uint32_t*)buf, size);
+	vector<uint8_t> vec = vector<uint8_t>();
+	//if (not FDCB::read_memory(vec, btftp_handle->address, 512)) {
+	//	return -1;
+	//}
 
-	btftp_handle->address += 512;
+	memcpy(buf, vec.data(), size);
+
+ 	btftp_handle->address += TFTP_MAX_DATA_SIZE;
 	if (btftp_handle->address >  btftp_handle->max_addr) {
 		return 511;
 	}else{
-		return 512;
+		return TFTP_MAX_DATA_SIZE;
 	}
-
-	//Flash::read(btftp_handle->address, (uint32_t*)buf, 64);
-
-	return 511;
 }
 
 void printf_address_debug(int add){
@@ -98,24 +105,30 @@ int BTFTP::write(void* handle, struct pbuf* p){
 		return -1;
 	}
 
-	//printf_address_debug(btftp_handle->address);
-	printf_address_debug(FLASH_SECTOR7_START_ADDRESS);
+	printf_address_debug(btftp_handle->address);
 	printf("Lenth = %d\n", p->len);
-	Flash::write((uint32_t*)p->payload, FLASH_SECTOR7_START_ADDRESS, 128);
+
+	vector<uint8_t> data = vector<uint8_t>((uint8_t*)p->payload, ((uint8_t*)p->payload) + p->len);
+	//if (not FDCB::write_memory(btftp_handle->address, data)) {
+	//	return -1;
+	//}
+
+//	if (!Flash::write((uint32_t*)p->payload, btftp_handle->address, 128)) {
+//		return -1;
+//	}
+	btftp_handle->address += p->len;
 
 	//TODO:Revisar que puede estar mal la suma, quizas falta dividir por el sizeof()
 	//vector<uint8_t> data((uint8_t*)p->payload,((uint8_t*)p->payload) + p->len);
 
 	//FDCB::write_memory(btftp_handle->address, data); TODO: descomentar esto
 
-	//btftp_handle->address += p->len;
-
 	return 1;
 }
 
 void BTFTP::re(void* handle){
 	BTFTP::BHandle* btftp_handle = (BTFTP::BHandle*)handle;
-	btftp_handle->address -= 512;
+	btftp_handle->address -= TFTP_MAX_DATA_SIZE;
 }
 
 

@@ -12,10 +12,12 @@
 #include "C++Utilities/CppUtils.hpp"
 #include "lwip/apps/tftp_server.h"
 #include "ErrorHandler/ErrorHandler.hpp"
+#include "FDCBootloader/FDCBootloader.hpp"
 #include "Flash/Flash.hpp"
-//#include "FDCBootloader/FDCBootloader.hpp"
 
 //#ifdef HAL_ETH_MODULE_ENABLED
+
+#define TFTP_MAX_DATA_SIZE 512
 
 class BTFTP{
 public:

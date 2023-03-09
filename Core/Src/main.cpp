@@ -12,21 +12,62 @@
 
 extern struct netif gnetif;
 
+
 int main(void)
 {
 
-//	FDCB::set_up(FDCAN::fdcan1);
+	FDCAN::inscribe(FDCAN::fdcan1);
+	DigitalOutput led_op = DigitalOutput(PG8);
+	uint8_t version;
 	STLIB::start(Board, "192.168.1.4", "255.255.0.0", "192.168.1.1");
-	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-	BTFTP::start();
-	//BTFTP::on();
-	//udp_packet_test udp = udp_packet_test();
+	//BTFTP::start();
+   	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
+	led_op.turn_on();
+	FDCB::get_version(version);
+	printf("Version: 0x%X\n\n", version);
+
+
+	uint8_t data[131072];
+//	int i ;
+//	for (i = 0; i < 131072; ++i) {
+//		data[i] = 0;
+//	}
+//
+//
+//
+
+
+
+
+	int i ;
+	for (i = 0; i < 131072; ++i) {
+		data[i] = 0;
+	}
+
+	if (FDCB::read_memory(0, data)) {
+		printf("Read!\nData: ");
+	} else{
+		printf("ERROR!\nData: ");
+	}
+
+
+	for (int i = 0; i < 16; ++i) {
+		printf("0x%X | ", data[i]);
+	}
+	printf("\nData 2: ");
+	for (int i = 16; i < 32; ++i) {
+		printf("0x%X | ", data[i]);
+	}
+	printf("\nData 3: ");
+	for (int i = 131072 - 16; i < 131072; ++i) {
+		printf("0x%X | ", data[i]);
+	}
 
 	while (1) {
-		//print_freq();
-		//udp.send();
+
 		STLIB::update();
+
 	}
 }
 
