@@ -55,11 +55,11 @@ bool FDCB::read_memory(uint8_t sector, uint8_t* data){
 	tx_data.at(0) = sector;
 
 	FDCAN::transmit(FDCB::fdcan, FDCB::READ_MEMORY, tx_data, FDCAN::DLC::BYTES_64);
-	printf("Read order send!\n");
+
 	if (not __wait_for_ack(FDCB::READ_MEMORY, packet)) {
 		return false;
 	}
-	printf("ACK Received!\n");
+
 	if (not __send_ack(FDCB::READ_MEMORY)) {
 		return false;
 	}
@@ -84,11 +84,62 @@ bool FDCB::read_memory(uint8_t sector, uint8_t* data){
 		}
 		counter++;
 	}
-	printf("All data received!\n");
+
 	if (not __wait_for_ack(FDCB::READ_MEMORY, packet)) {
 		return false;
 	}
-	printf("END!\n");
+
+	return true;
+}
+
+bool FDCB::write_memory(uint8_t sector, uint8_t* data){
+	vector<uint8_t> tx_data = vector<uint8_t>(64);
+	FDCAN::Packet packet = FDCAN::Packet();
+	packet.rx_data = vector<uint8_t>(64);
+	uint16_t i;
+	uint32_t index, counter;
+
+	tx_data.at(0) = sector;
+
+	FDCAN::transmit(FDCB::fdcan, FDCB::WRITE_MEMORY, tx_data, FDCAN::DLC::BYTES_64);
+
+	if (not __wait_for_ack(FDCB::WRITE_MEMORY, packet)) {
+		return false;
+	}
+
+	if (not __send_ack(FDCB::WRITE_MEMORY)) {
+		return false;
+	}
+
+	//HASTA AQUI ES IGUAL
+
+	index = 0;
+	counter = 1;
+	for (i = 0; i < 2048; ++i) {
+		memcpy(&tx_data[0], &data[index], 64);
+		if(not FDCAN::transmit(FDCB::fdcan, FDCB::WRITE_MEMORY, tx_data, FDCAN::DLC::BYTES_64)) {
+			return false;
+		}
+		index += 64;
+
+		if (counter >= FDCB_BLOCK_SIZE) {
+			if (not FDCB::__wait_for_ack(FDCB::WRITE_MEMORY, packet)) {
+				return false;
+			}
+
+			FDCB::__send_ack(FDCB::WRITE_MEMORY);
+			counter = 1;
+		}else{
+			counter++;
+		}
+
+	}
+
+	//A PARTIR DE AQUI ES IGUAL
+	if (not __wait_for_ack(FDCB::WRITE_MEMORY, packet)) {
+		return false;
+	}
+
 	return true;
 }
 

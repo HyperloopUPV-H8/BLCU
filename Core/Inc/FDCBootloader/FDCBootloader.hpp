@@ -13,7 +13,7 @@
 
 
 #define FDCB_VERBOSE_LEVEL 			1
-#define FDCB_TIMOUT_MS 				1000
+#define FDCB_TIMOUT_MS 				2000
 #define FDCB_FIRST_BYTE_NONE 		0xFF
 
 #define FDCB_ACK  					((uint8_t)0x79)
@@ -54,7 +54,7 @@ public:
 	//Data tiene que tener 131072 bytes alocados
 	static bool read_memory(uint8_t sector, uint8_t* data);
 
-	static bool write_memory();
+	static bool write_memory(uint8_t sector, uint8_t* data);
 
 	static bool erase_memory();
 
