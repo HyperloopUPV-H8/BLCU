@@ -11,7 +11,7 @@
 //#ifdef HAL_ETH_MODULE_ENABLED
 //Variables:
 bool BTFTP::ready = false;
-
+BTFTP::btftp_file_t* BTFTP::file = nullptr;
 ////Public:
 //void BTFTP::on(){
 //	BTFTP::current_state = BTFTP::State::ON;
@@ -32,9 +32,14 @@ void BTFTP::start(){
 	//TODO: estaria bien comprobar antes que no esta ya ready
 	//		ya sea aqui o denstro del set_up
 
-
 	if (error != ERR_OK) {
 		ErrorHandler("Unable to start TFTP server, error code: %lu.", error);
+	}
+
+	BTFTP::file->payload = (uint8_t*)malloc(SECTOR_SIZE_IN_BYTES);
+	if (BTFTP::file->payload == nullptr) {
+		ErrorHandler("BLCU could not allocate enough memory for tftp file buffer");
+		return;
 	}
 
 	//TODO: Remove debug print
@@ -49,46 +54,75 @@ void* BTFTP::open(const char* fname, const char* mode, u8_t write){
 //	}
 
 	const char* accepted_mode = "octet";
-	printf("Modo seleccionado: %s \ %s\n", mode, accepted_mode);
 	if (strcmp(mode, accepted_mode)) {
+		return nullptr;
+	}
+	printf("File opened in %s mode.\n", accepted_mode);
+
+	uint8_t version = 0x0;;
+
+	if (not FDCB::get_version(version)){
+		//TODO: WARNING: Bootloader not respondig, unable to start read/write operation!
+		printf("Bootloader not respondig, unable to start read/write operation!");
+		return nullptr;
+	}
+
+	if (version != FDCB_CURRENT_VERSION) {
+		ErrorHandler("Mismatch in bootloader version, current version in host: 0x%X in target: 0x%X.", FDCB_CURRENT_VERSION, version);
 		return nullptr;
 	}
 
 	uint32_t address = FLASH_SECTOR0_START_ADDRESS;
 	BTFTP::BHandle* handle = new BTFTP::BHandle(string(fname), string(mode), write, address);
+	handle->file = BTFTP::file;
+	handle->current_sector = 0;
+	BTFTP::file->max_pointer = SECTOR_SIZE_IN_BYTES - 1;
+
+	if (handle->read_write == 1) {
+		printf("modo escritura\n");
+		handle->file->pointer = 0;
+	}else{
+		printf("modo lectura\n");
+		handle->file->pointer = handle->file->max_pointer;
+	}
 
 	return handle;
 }
 
 void BTFTP::close(void* handle){
-	printf("Conexion closed, handler erased\n");
+	//BTFTP::BHandle* btftp_handle = (BTFTP::BHandle*)handle;
 	free(handle);
 
+	printf("Conexion closed, handler erased\n");
 }
 
 int BTFTP::read(void* handle, void* buf, int bytes){
 	BTFTP::BHandle* btftp_handle = (BTFTP::BHandle*)handle;
-
-	uint16_t size = 0;
-	if ((btftp_handle->max_addr - btftp_handle->address) > TFTP_MAX_DATA_SIZE) {
-		size = TFTP_MAX_DATA_SIZE;
-	}else{
-		size = (btftp_handle->max_addr - btftp_handle->address);
+	if (btftp_handle->read_write == 1) {
+		return -1;
 	}
 
-	vector<uint8_t> vec = vector<uint8_t>();
-	//if (not FDCB::read_memory(vec, btftp_handle->address, 512)) {
-	//	return -1;
-	//}
+	if (btftp_handle->file->pointer >= btftp_handle->file->max_pointer) {
 
-	memcpy(buf, vec.data(), size);
+		if (btftp_handle->current_sector > 6) {
+			return 0;
+		}else{
+			printf("Pointer = %lu | MAX Pointer = %lu | Sector = %lu \n", btftp_handle->file->pointer,  btftp_handle->file->max_pointer, btftp_handle->current_sector);
 
- 	btftp_handle->address += TFTP_MAX_DATA_SIZE;
-	if (btftp_handle->address >  btftp_handle->max_addr) {
-		return 511;
-	}else{
-		return TFTP_MAX_DATA_SIZE;
+			if (not FDCB::read_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
+				return -1;
+			}
+			btftp_handle->file->pointer = 0;
+			btftp_handle->current_sector++;
+		}
 	}
+
+	memcpy((uint8_t*)buf, &btftp_handle->file->payload[btftp_handle->file->pointer], 512);
+	btftp_handle->file->pointer += TFTP_MAX_DATA_SIZE;
+
+
+
+	return 512;
 }
 
 void printf_address_debug(int add){
@@ -105,30 +139,34 @@ int BTFTP::write(void* handle, struct pbuf* p){
 		return -1;
 	}
 
-	printf_address_debug(btftp_handle->address);
-	printf("Lenth = %d\n", p->len);
+	memcpy(&btftp_handle->file->payload[btftp_handle->file->pointer], (uint8_t*)p->payload, 512);
+	btftp_handle->file->pointer += TFTP_MAX_DATA_SIZE;
 
-	vector<uint8_t> data = vector<uint8_t>((uint8_t*)p->payload, ((uint8_t*)p->payload) + p->len);
-	//if (not FDCB::write_memory(btftp_handle->address, data)) {
-	//	return -1;
-	//}
-
-//	if (!Flash::write((uint32_t*)p->payload, btftp_handle->address, 128)) {
-//		return -1;
+//	if (p->len < TFTP_MAX_DATA_SIZE) {
+//		if (not FDCB::write_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
+//			return -1;
+//		}
+//		return 0;
 //	}
-	btftp_handle->address += p->len;
-
-	//TODO:Revisar que puede estar mal la suma, quizas falta dividir por el sizeof()
-	//vector<uint8_t> data((uint8_t*)p->payload,((uint8_t*)p->payload) + p->len);
-
-	//FDCB::write_memory(btftp_handle->address, data); TODO: descomentar esto
+	printf("Puntero %lu\n",btftp_handle->file->pointer);
+	if (btftp_handle->file->pointer >= btftp_handle->file->max_pointer) {
+		if (btftp_handle->current_sector >= 7) {
+			return 1;
+		}else{
+			if (not FDCB::write_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
+				return -1;
+			}
+			btftp_handle->file->pointer = 0;
+			btftp_handle->current_sector++;
+		}
+	}
 
 	return 1;
 }
 
 void BTFTP::re(void* handle){
 	BTFTP::BHandle* btftp_handle = (BTFTP::BHandle*)handle;
-	btftp_handle->address -= TFTP_MAX_DATA_SIZE;
+	btftp_handle->file->pointer -= TFTP_MAX_DATA_SIZE;
 }
 
 
