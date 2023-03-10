@@ -120,8 +120,6 @@ int BTFTP::read(void* handle, void* buf, int bytes){
 	memcpy((uint8_t*)buf, &btftp_handle->file->payload[btftp_handle->file->pointer], 512);
 	btftp_handle->file->pointer += TFTP_MAX_DATA_SIZE;
 
-
-
 	return 512;
 }
 

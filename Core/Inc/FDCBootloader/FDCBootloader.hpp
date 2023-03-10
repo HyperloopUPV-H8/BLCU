@@ -15,7 +15,7 @@
 #define FDCB_CURRENT_VERSION        ((uint8_t)0x03)
 
 #define FDCB_VERBOSE_LEVEL 			1
-#define FDCB_TIMOUT_MS 				2000
+#define FDCB_TIMEOUT_MS 			2000
 #define FDCB_FIRST_BYTE_NONE 		0xFF
 
 #define FDCB_ACK  					((uint8_t)0x79)

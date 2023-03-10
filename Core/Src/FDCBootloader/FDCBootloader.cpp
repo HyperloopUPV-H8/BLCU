@@ -215,7 +215,7 @@ bool FDCB::__send_nack(uint8_t order){
 bool FDCB::__wait_for_bootloader_message(){
      bool exit = true;
 
- 	uint8_t id = Time::register_low_precision_alarm(FDCB_TIMOUT_MS, [&](){
+ 	uint8_t id = Time::register_low_precision_alarm(FDCB_TIMEOUT_MS, [&](){
  		exit = false;
  		printf("Salto!\n");
  	});
