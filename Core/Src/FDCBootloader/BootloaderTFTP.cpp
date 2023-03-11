@@ -107,8 +107,6 @@ int BTFTP::read(void* handle, void* buf, int bytes){
 		if (btftp_handle->current_sector > 6) {
 			return 0;
 		}else{
-			printf("Pointer = %lu | MAX Pointer = %lu | Sector = %lu \n", btftp_handle->file->pointer,  btftp_handle->file->max_pointer, btftp_handle->current_sector);
-
 			if (not FDCB::read_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
 				return -1;
 			}
@@ -137,26 +135,33 @@ int BTFTP::write(void* handle, struct pbuf* p){
 		return -1;
 	}
 
-	memcpy(&btftp_handle->file->payload[btftp_handle->file->pointer], (uint8_t*)p->payload, 512);
-	btftp_handle->file->pointer += TFTP_MAX_DATA_SIZE;
 
-//	if (p->len < TFTP_MAX_DATA_SIZE) {
-//		if (not FDCB::write_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
-//			return -1;
-//		}
-//		return 0;
-//	}
-	printf("Puntero %lu\n",btftp_handle->file->pointer);
+
 	if (btftp_handle->file->pointer >= btftp_handle->file->max_pointer) {
-		if (btftp_handle->current_sector >= 7) {
+		if (btftp_handle->current_sector > 6) {
 			return 1;
 		}else{
+			printf("Pointer = %lu | MAX Pointer = %lu | Sector = %lu \n", btftp_handle->file->pointer,  btftp_handle->file->max_pointer, btftp_handle->current_sector);
+
 			if (not FDCB::write_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
 				return -1;
 			}
 			btftp_handle->file->pointer = 0;
 			btftp_handle->current_sector++;
 		}
+	}
+
+
+
+	memcpy(&btftp_handle->file->payload[btftp_handle->file->pointer], (uint8_t*)p->payload, p->len);
+	btftp_handle->file->pointer += TFTP_MAX_DATA_SIZE;
+
+	if (p->len < TFTP_MAX_DATA_SIZE) {
+		printf("Acabe antes xD\n");
+		if (not FDCB::write_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
+			return -1;
+		}
+		return 0;
 	}
 
 	return 1;
