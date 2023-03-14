@@ -13,6 +13,7 @@
 #include "lwip/apps/tftp_server.h"
 #include "ErrorHandler/ErrorHandler.hpp"
 #include "FDCBootloader/FDCBootloader.hpp"
+#include "BLCU/BLCU.hpp"
 #include "Flash/Flash.hpp"
 
 //#ifdef HAL_ETH_MODULE_ENABLED
@@ -43,19 +44,26 @@ public:
 		static const uint32_t mem_size = 0xFFFFF;
 	};
 
+	enum Mode{
+		READ = 0,
+		WRITE = 1,
+		NONE = 2
+	};
+
 
 public:
 	static btftp_file_t* file;
 
 	static void start();
 
-//	static void on();
-//
-//	static void off();
-//
-//	static BTFTP::State get_state();
+	static void on(BTFTP::Mode);
+
+	static void off();
+
 private:
 	static bool ready;
+
+	static BTFTP::Mode mode;
 
 	static void* open(const char* fname, const char* mode, u8_t write);
 

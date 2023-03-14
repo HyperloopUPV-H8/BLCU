@@ -12,22 +12,26 @@
 
 extern struct netif gnetif;
 
-
 int main(void)
 {
+//
+//	FDCAN::inscribe(FDCAN::fdcan1);
+//	DigitalOutput led_op = DigitalOutput(PG8);
+//
+//	STLIB::start(Board, "192.168.1.4", "255.255.0.0", "192.168.1.1");
+//   	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+//
+//	BTFTP::start();
+//
+//	led_op.turn_on();
+	BLCU::set_up();
+	BLCU::start();
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	printf("BLCU iniciada!\n");
 
-	FDCAN::inscribe(FDCAN::fdcan1);
-	DigitalOutput led_op = DigitalOutput(PG8);
-
-	STLIB::start(Board, "192.168.1.4", "255.255.0.0", "192.168.1.1");
-   	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-
-	BTFTP::start();
-
-	led_op.turn_on();
 	while (1) {
 
-		STLIB::update();
+		BLCU::update();
 
 	}
 }

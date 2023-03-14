@@ -10,11 +10,18 @@
 #include "ST-LIB.hpp"
 #include "C++Utilities/CppUtils.hpp"
 #include "FDCBootloader/FDCBootloader.hpp"
+#include "FDCBootloader/BootloaderTFTP.hpp"
 
 class BLCU {
 public:
+
     enum Target{
-        Master,
+        VCU,
+		OBCCU,
+		BMSA,
+		LCUM,
+		LCUS,
+		PCU,
         NOTARGET,
     };
 
@@ -23,6 +30,16 @@ public:
         BOOTING,
         FAULT,
     };
+
+	typedef struct {
+		BLCU::Target target;
+		double version;
+
+		void clean_data(){
+			target = BLCU::Target::NOTARGET;
+			version = 0;
+		}
+	}orders_data_t;
 
 private:
     static StateMachine blcu_state_machine;
@@ -40,43 +57,68 @@ private:
     static Target current_target;
 
     static string ip, mask, gateway;
+    static uint16_t port;
+    static ServerSocket tcp_socket;
+    static orders_data_t orders_data;
+
+    static Order<BLCU::Target> write_program_order;
+    static Order<BLCU::Target> read_program_order;
+    static Order<BLCU::Target> erase_program_order;
+    static Order<BLCU::Target, uint8_t> get_version_order;
+    static Order<BLCU::Target> reset_all_order;
 public:
 
     static void reset_all();
 
-    static void force_quit_bootmode(const Target& target);
+    static void force_quit_bootmode(); //ESta seguramente se vaya fuera
 
-    static void get_id(const Target& target);
+    static void get_version();
 
-    static void read(const Target& target, const uint32_t& address, const uint32_t& size);
+    static void read_program();
 
-    static void write(const Target& target, span<uint8_t> data);
+    static void write_program();
 
-    static void erase_all();
+    static void erase_program();
 
-    static void set_up(string ip = "192.168.1.4", string mask = "255.255.0.0", string gateway = "192.168.1.1");
+    static void finish_write_read_order();
+
+    static void set_up();
 
     static void start();
 
     static void update();
 
 private:
-    static void set_up_peripherals();
+	/***********************************************/
+	//                  Orders methods
+	/***********************************************/
 
-    static void set_up_state_machine();
+    static void __send_to_bootmode(const BLCU::Target& target);
 
-    static void set_up_resets();
+    static void __turn_off_all_boards();
 
-    static void set_up_boots();
+    /***********************************************/
+	//                  Start methods
+	/***********************************************/
+    static void __resets_start();
 
-    static void set_up_leds();
+    static void __boots_start();
 
-    static void resets_start();
+    static void __leds_start();
 
-    static void boots_start();
+	/***********************************************/
+	//                  SetUp methods
+	/***********************************************/
+    static void __set_up_state_machine(); //TODO:
 
-    static void leds_start();
+    static void __set_up_orders(); //TODO:
 
-    static void send_to_bootmode(Target target);
+    static void __set_up_peripherals();
+
+    static void __set_up_resets();
+
+    static void __set_up_boots();
+
+    static void __set_up_leds();
 
 };

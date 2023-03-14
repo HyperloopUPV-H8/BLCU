@@ -11,19 +11,21 @@
 //#ifdef HAL_ETH_MODULE_ENABLED
 //Variables:
 bool BTFTP::ready = false;
+
+BTFTP::Mode BTFTP::mode = BTFTP::Mode::NONE;
+
 BTFTP::btftp_file_t* BTFTP::file = nullptr;
-////Public:
-//void BTFTP::on(){
-//	BTFTP::current_state = BTFTP::State::ON;
-//}
-//
-//void BTFTP::off(){
-//	BTFTP::current_state = BTFTP::State::OFF;
-//}
-//
-//BTFTP::State BTFTP::get_state(){
-//	return BTFTP::current_state;
-//}
+
+//Public:
+void BTFTP::on(BTFTP::Mode mode){
+	BTFTP::ready = true;
+	BTFTP::mode = mode;
+}
+
+void BTFTP::off(){
+	BTFTP::ready = false;
+	BTFTP::mode = BTFTP::Mode::NONE;;
+}
 
 void BTFTP::start(){
 	const tftp_context* context = new tftp_context(&BTFTP::open, &BTFTP::close, &BTFTP::read, &BTFTP::write, &BTFTP::re);
@@ -49,9 +51,9 @@ void BTFTP::start(){
 //Private:
 
 void* BTFTP::open(const char* fname, const char* mode, u8_t write){
-//	if (not ready) {
-//		return nullptr;
-//	}
+	if (not BTFTP::ready || write != (uint8_t)BTFTP::mode) {
+		return nullptr;
+	}
 
 	const char* accepted_mode = "octet";
 	if (strcmp(mode, accepted_mode)) {
@@ -72,6 +74,8 @@ void* BTFTP::open(const char* fname, const char* mode, u8_t write){
 		return nullptr;
 	}
 
+
+
 	uint32_t address = FLASH_SECTOR0_START_ADDRESS;
 	BTFTP::BHandle* handle = new BTFTP::BHandle(string(fname), string(mode), write, address);
 	handle->file = BTFTP::file;
@@ -79,10 +83,8 @@ void* BTFTP::open(const char* fname, const char* mode, u8_t write){
 	BTFTP::file->max_pointer = SECTOR_SIZE_IN_BYTES - 1;
 
 	if (handle->read_write == 1) {
-		printf("modo escritura\n");
 		handle->file->pointer = 0;
 	}else{
-		printf("modo lectura\n");
 		handle->file->pointer = handle->file->max_pointer;
 	}
 
@@ -90,10 +92,8 @@ void* BTFTP::open(const char* fname, const char* mode, u8_t write){
 }
 
 void BTFTP::close(void* handle){
-	//BTFTP::BHandle* btftp_handle = (BTFTP::BHandle*)handle;
 	free(handle);
-
-	printf("Conexion closed, handler erased\n");
+	BLCU::finish_write_read_order();
 }
 
 int BTFTP::read(void* handle, void* buf, int bytes){
@@ -121,14 +121,6 @@ int BTFTP::read(void* handle, void* buf, int bytes){
 	return 512;
 }
 
-void printf_address_debug(int add){
-	//TODO: Remove debug print
-	std::stringstream stream;
-	stream << std::hex << add;
-	std::string result( stream.str() );
-	printf("Solicitud de escritura en 0x%s! \n", result.c_str());
-}
-
 int BTFTP::write(void* handle, struct pbuf* p){
 	BTFTP::BHandle* btftp_handle = (BTFTP::BHandle*)handle;
 	if (btftp_handle->read_write == 0) {
@@ -141,8 +133,6 @@ int BTFTP::write(void* handle, struct pbuf* p){
 		if (btftp_handle->current_sector > 6) {
 			return 1;
 		}else{
-			printf("Pointer = %lu | MAX Pointer = %lu | Sector = %lu \n", btftp_handle->file->pointer,  btftp_handle->file->max_pointer, btftp_handle->current_sector);
-
 			if (not FDCB::write_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
 				return -1;
 			}
@@ -151,13 +141,10 @@ int BTFTP::write(void* handle, struct pbuf* p){
 		}
 	}
 
-
-
 	memcpy(&btftp_handle->file->payload[btftp_handle->file->pointer], (uint8_t*)p->payload, p->len);
 	btftp_handle->file->pointer += TFTP_MAX_DATA_SIZE;
 
 	if (p->len < TFTP_MAX_DATA_SIZE) {
-		printf("Acabe antes xD\n");
 		if (not FDCB::write_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
 			return -1;
 		}
