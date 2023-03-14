@@ -45,9 +45,9 @@ void BLCU::reset_all(){
 
 void BLCU::set_up(string ip, string mask, string gateway)
 {
-	ip = ip;
-	mask = mask;
-	gateway = gateway;
+	BLCU::ip = ip;
+	BLCU::mask = mask;
+	BLCU::gateway = gateway;
 
     set_up_peripherals();
     set_up_state_machine();
