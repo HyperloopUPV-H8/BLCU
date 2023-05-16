@@ -8,9 +8,10 @@
 #pragma once
 
 #include "ST-LIB.hpp"
-#include "C++Utilities/CppUtils.hpp"
 #include "FDCBootloader/FDCBootloader.hpp"
 #include "FDCBootloader/BootloaderTFTP.hpp"
+#include "ServerSocket.hpp"
+
 
 class BLCU {
 public:
@@ -57,15 +58,15 @@ private:
     static Target current_target;
 
     static string ip, mask, gateway;
-    static uint16_t port;
+    static uint32_t port;
     static ServerSocket tcp_socket;
     static orders_data_t orders_data;
 
-    static Order<BLCU::Target> write_program_order;
-    static Order<BLCU::Target> read_program_order;
-    static Order<BLCU::Target> erase_program_order;
-    static Order<BLCU::Target, uint8_t> get_version_order;
-    static Order<BLCU::Target> reset_all_order;
+	static HeapOrder write_program_order;
+	static HeapOrder read_program_order;
+	static HeapOrder erase_program_order;
+	static HeapOrder get_version_order;
+	static HeapOrder reset_all_order;
 public:
 
     static void reset_all();

@@ -37,8 +37,8 @@ ENTRY(Reset_Handler)
 /* Highest address of the user mode stack */
 _estack = ORIGIN(RAM_D1) + LENGTH(RAM_D1);    /* end of RAM */
 /* Generate a link error if heap and stack don't fit into RAM */
-_Min_Heap_Size = 0x200 ;      /* required amount of heap  */
-_Min_Stack_Size = 0x400 ; /* required amount of stack */
+_Min_Heap_Size = 0x200;      /* required amount of heap  */
+_Min_Stack_Size = 0x400; /* required amount of stack */
 
 /* Specify the memory areas */
 MEMORY
@@ -137,7 +137,7 @@ SECTIONS
 
   /* Uninitialized data section */
   . = ALIGN(4);
-  .bss :
+  .bss (NOLOAD) :
   {
     /* This is used by the startup in order to initialize the .bss section */
     _sbss = .;         /* define a global symbol at bss start */
@@ -146,6 +146,11 @@ SECTIONS
     *(.bss*)
     *(COMMON)
 
+    /* ETH_CODE: add placement of RX buffer. STM32H72x/H73x has small D2 RAM, so we need to put it there.
+     * (NOLOAD) attribute used for .bss section to avoid linker warning (.bss initialized by startup code)
+     */
+    . = ALIGN(32);
+    *(.Rx_PoolSection)
     . = ALIGN(4);
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
@@ -162,16 +167,15 @@ SECTIONS
     . = ALIGN(8);
   } >RAM_D1
 
- .lwip_sec (NOLOAD) :
+  /* ETH_CODE: add placement of DMA descriptors, rest is used by RX_POOL */
+  .lwip_sec (NOLOAD) :
   {
     . = ABSOLUTE(0x30000000);
     *(.RxDecripSection) 
     
-    . = ABSOLUTE(0x30000060);
+    . = ABSOLUTE(0x30000100);
     *(.TxDecripSection)
     
-    . = ABSOLUTE(0x30000200);
-    *(.Rx_PoolSection) 
   } >RAM_D2
 
   /* Remove information from the standard libraries */

@@ -23,41 +23,43 @@ DigitalOutput BLCU::LED_SLEEP = DigitalOutput();
 string BLCU::ip = "192.168.1.4";
 string BLCU::mask = "255.255.0.0";
 string BLCU::gateway = "192.167.1.1";
-uint16_t BLCU::port = 50500;
+uint32_t BLCU::port = 50500;
+
 ServerSocket BLCU::tcp_socket = ServerSocket(BLCU::ip, BLCU::port);
+
 BLCU::orders_data_t BLCU::orders_data = {
 		BLCU::Target::NOTARGET,
 		0
 };
 
-Order<BLCU::Target> BLCU::write_program_order = {
+HeapOrder BLCU::write_program_order = {
 		700,
-		PacketValue(&BLCU::orders_data.target),
+		&BLCU::orders_data.target,
 };
 
 
-Order<BLCU::Target> BLCU::read_program_order = {
+HeapOrder BLCU::read_program_order = {
 		701,
-		PacketValue(&BLCU::orders_data.target),
+		&BLCU::orders_data.target,
 };
 
 
-Order<BLCU::Target> BLCU::erase_program_order = {
+HeapOrder BLCU::erase_program_order = {
 		702,
-		PacketValue(&BLCU::orders_data.target),
+		&BLCU::orders_data.target,
 };
 
 
-Order<BLCU::Target, uint8_t> BLCU::get_version_order = {
+HeapOrder BLCU::get_version_order = {
 		703,
-		PacketValue(&BLCU::orders_data.target),
-		PacketValue<uint8_t>(&BLCU::orders_data.version, 1),
+		&BLCU::orders_data.target,
+		&BLCU::orders_data.version,
 };
 
 
-Order<BLCU::Target> BLCU::reset_all_order = {
+HeapOrder BLCU::reset_all_order = {
 		704,
-		PacketValue(&BLCU::orders_data.target),
+		&BLCU::orders_data.target,
 
 };
 
@@ -139,7 +141,7 @@ void BLCU::set_up()
 }
 
 void BLCU::start(){
-    STLIB::start(Board, ip, mask, gateway, UART::uart2);
+    STLIB::start(ip, mask, gateway, UART::uart2);
     BTFTP::start();
 
 	BLCU::__resets_start();
@@ -256,11 +258,11 @@ void BLCU::__set_up_state_machine(){
 }
 
 void BLCU::__set_up_orders(){
-	BLCU::write_program_order.set_callback(BLCU::write_program);
-	BLCU::read_program_order.set_callback(BLCU::read_program);
-	BLCU::erase_program_order.set_callback(BLCU::erase_program);
-	BLCU::get_version_order.set_callback(BLCU::get_version);
-	BLCU::reset_all_order.set_callback(BLCU::reset_all);
+//	BLCU::write_program_order.set_callback(BLCU::write_program);
+//	BLCU::read_program_order.set_callback(BLCU::read_program);
+//	BLCU::erase_program_order.set_callback(BLCU::erase_program);
+//	BLCU::get_version_order.set_callback(BLCU::get_version);
+//	BLCU::reset_all_order.set_callback(BLCU::reset_all);
 }
 
 void BLCU::__set_up_peripherals(){

@@ -85,93 +85,93 @@ int32_t  LAN8742_RegisterBusIO(lan8742_Object_t *pObj, lan8742_IOCtx_t *ioctx)
   *         LAN8742_STATUS_WRITE_ERROR if connot write to register
   *         LAN8742_STATUS_RESET_TIMEOUT if cannot perform a software reset
   */
-int32_t LAN8742_Init(lan8742_Object_t *pObj)
+ int32_t LAN8742_Init(lan8742_Object_t *pObj)
  {
-   uint32_t tickstart = 0, regvalue = 0, addr = 0;
-   int32_t status = LAN8742_STATUS_OK;
-   if(pObj->Is_Initialized == 0)
-   {
-     if(pObj->IO.Init != 0)
-     {
-       /* GPIO and Clocks initialization */
-       pObj->IO.Init();
-     }
-     /* for later check */
-     pObj->DevAddr = LAN8742_MAX_DEV_ADDR + 1;
-     /* Get the device address from special mode register */
-     for(addr = 0; addr <= LAN8742_MAX_DEV_ADDR; addr ++)
-     {
-       if(pObj->IO.ReadReg(addr, LAN8742_SMR, &regvalue) < 0)
-       {
-         status = LAN8742_STATUS_READ_ERROR;
-         /* Can't read from this device address
-            continue with next address */
-         continue;
-       }
-       if((regvalue & LAN8742_SMR_PHY_ADDR) == addr)
-       {
-         pObj->DevAddr = addr;
-         status = LAN8742_STATUS_OK;
-         break;
-       }
-     }
-     if(pObj->DevAddr > LAN8742_MAX_DEV_ADDR)
-     {
-       status = LAN8742_STATUS_ADDRESS_ERROR;
-     }
-     pObj->IO.ReadReg(pObj->DevAddr,18,&regvalue);
-     pObj->IO.WriteReg(pObj->DevAddr,18, (uint16_t)0b1<<14| regvalue);
-     pObj->IO.ReadReg(pObj->DevAddr,17,&regvalue);
-     pObj->IO.WriteReg(pObj->DevAddr,17,regvalue|(uint16_t)0b1<<2);
-     /* if device address is matched */
-     if(status == LAN8742_STATUS_OK)
-     {
-       /* set a software reset  */
-       if(pObj->IO.WriteReg(pObj->DevAddr, LAN8742_BCR, LAN8742_BCR_SOFT_RESET) >= 0)
-       {
-         /* get software reset status */
-         if(pObj->IO.ReadReg(pObj->DevAddr, LAN8742_BCR, &regvalue) >= 0)
-         {
-           tickstart = pObj->IO.GetTick();
-           /* wait until software reset is done or timeout occured  */
-           while(regvalue & LAN8742_BCR_SOFT_RESET)
-           {
-             if((pObj->IO.GetTick() - tickstart) <= LAN8742_SW_RESET_TO)
-             {
-               if(pObj->IO.ReadReg(pObj->DevAddr, LAN8742_BCR, &regvalue) < 0)
-               {
-                 status = LAN8742_STATUS_READ_ERROR;
-                 break;
-               }
-             }
-             else
-             {
-               status = LAN8742_STATUS_RESET_TIMEOUT;
-               break;
-             }
-           }
-         }
-         else
-         {
-           status = LAN8742_STATUS_READ_ERROR;
-         }
-       }
-       else
-       {
-         status = LAN8742_STATUS_WRITE_ERROR;
-       }
-     }
-   }
-   if(status == LAN8742_STATUS_OK)
-   {
-     tickstart =  pObj->IO.GetTick();
-     /* Wait for 2s to perform initialization */
-     while((pObj->IO.GetTick() - tickstart) <= LAN8742_INIT_TO)
-     {
-     }
-     pObj->Is_Initialized = 1;
-   }
-   return status;
+	 uint32_t tickstart = 0, regvalue = 0, addr = 0;
+	    int32_t status = LAN8742_STATUS_OK;
+	    if(pObj->Is_Initialized == 0)
+	    {
+	      if(pObj->IO.Init != 0)
+	      {
+	        /* GPIO and Clocks initialization */
+	        pObj->IO.Init();
+	      }
+	      /* for later check */
+	      pObj->DevAddr = LAN8742_MAX_DEV_ADDR + 1;
+	      /* Get the device address from special mode register */
+	      for(addr = 0; addr <= LAN8742_MAX_DEV_ADDR; addr ++)
+	      {
+	        if(pObj->IO.ReadReg(addr, LAN8742_SMR, &regvalue) < 0)
+	        {
+	          status = LAN8742_STATUS_READ_ERROR;
+	          /* Can't read from this device address
+	             continue with next address */
+	          continue;
+	        }
+	        if((regvalue & LAN8742_SMR_PHY_ADDR) == addr)
+	        {
+	          pObj->DevAddr = addr;
+	          status = LAN8742_STATUS_OK;
+	          break;
+	        }
+	      }
+	      if(pObj->DevAddr > LAN8742_MAX_DEV_ADDR)
+	      {
+	        status = LAN8742_STATUS_ADDRESS_ERROR;
+	      }
+	      pObj->IO.ReadReg(pObj->DevAddr,18,&regvalue);
+	      pObj->IO.WriteReg(pObj->DevAddr,18, (uint16_t)0b1<<14| regvalue);
+	      pObj->IO.ReadReg(pObj->DevAddr,17,&regvalue);
+	      pObj->IO.WriteReg(pObj->DevAddr,17,regvalue|(uint16_t)0b1<<2);
+	      /* if device address is matched */
+	      if(status == LAN8742_STATUS_OK)
+	      {
+	        /* set a software reset  */
+	        if(pObj->IO.WriteReg(pObj->DevAddr, LAN8742_BCR, LAN8742_BCR_SOFT_RESET) >= 0)
+	        {
+	          /* get software reset status */
+	          if(pObj->IO.ReadReg(pObj->DevAddr, LAN8742_BCR, &regvalue) >= 0)
+	          {
+	            tickstart = pObj->IO.GetTick();
+	            /* wait until software reset is done or timeout occured  */
+	            while(regvalue & LAN8742_BCR_SOFT_RESET)
+	            {
+	              if((pObj->IO.GetTick() - tickstart) <= LAN8742_SW_RESET_TO)
+	              {
+	                if(pObj->IO.ReadReg(pObj->DevAddr, LAN8742_BCR, &regvalue) < 0)
+	                {
+	                  status = LAN8742_STATUS_READ_ERROR;
+	                  break;
+	                }
+	              }
+	              else
+	              {
+	                status = LAN8742_STATUS_RESET_TIMEOUT;
+	                break;
+	              }
+	            }
+	          }
+	          else
+	          {
+	            status = LAN8742_STATUS_READ_ERROR;
+	          }
+	        }
+	        else
+	        {
+	          status = LAN8742_STATUS_WRITE_ERROR;
+	        }
+	      }
+	    }
+	    if(status == LAN8742_STATUS_OK)
+	    {
+	      tickstart =  pObj->IO.GetTick();
+	      /* Wait for 2s to perform initialization */
+	      while((pObj->IO.GetTick() - tickstart) <= LAN8742_INIT_TO)
+	      {
+	      }
+	      pObj->Is_Initialized = 1;
+	    }
+	    return status;
  }
 
 /**

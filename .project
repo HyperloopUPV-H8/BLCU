@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>BLCU</name>
+	<name>BLCU_NEW</name>
 	<comment></comment>
 	<projects>
 		<project>ST-LIB</project>
-		<project>FDCBootloader</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

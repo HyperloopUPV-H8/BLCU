@@ -17,7 +17,7 @@ void leds_example(){
     DigitalOutput LED_FLASH = DigitalOutput(PG5);
     DigitalOutput LED_SLEEP = DigitalOutput(PG4);
 
-    STLIB::start(Board);
+    STLIB::start();
 
     LED_OPERATIONAL.turn_on();
     LED_FAULT.turn_on();

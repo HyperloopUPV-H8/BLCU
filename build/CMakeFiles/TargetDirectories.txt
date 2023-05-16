@@ -1,0 +1,6 @@
+/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/build/CMakeFiles/BLCU_NEW.elf.dir
+/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/build/CMakeFiles/edit_cache.dir
+/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/build/CMakeFiles/rebuild_cache.dir
+/opt/malva/ST-LIB/build/CMakeFiles/st-lib.dir
+/opt/malva/ST-LIB/build/CMakeFiles/edit_cache.dir
+/opt/malva/ST-LIB/build/CMakeFiles/rebuild_cache.dir

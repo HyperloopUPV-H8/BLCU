@@ -1,0 +1,61 @@
+// {
+//     "version": "0.2.0",
+//     "configurations": [
+//         {
+//             "type": "cortex-debug",
+//             "request": "launch",
+//             "name": "Debug (OpenOCD)",
+//             "servertype": "openocd",
+//             "cwd": "${workspaceRoot}",
+//             "runToMain": true,
+//             "showDevDebugOutput": "raw",
+//             "executable": "/home/alejandro/projects/BMS/OBCCU/build/OBCCU.elf",
+//             "device": "STM32H723ZG",
+//             "configFiles": [
+//                 "/home/alejandro/projects/BMS/OBCCU/stlink.cfg",
+//                 "/home/alejandro/projects/BMS/OBCCU/stm32h7x.cfg"
+//             ],
+//             "svdFile": "/home/alejandro/projects/BMS/OBCCU/STM32H723.svd",
+//             "swoConfig": {
+//                 "enabled": true,
+//                 "cpuFrequency": 8000000,
+//                 "swoFrequency": 2000000,
+//                 "source": "probe",
+//                 "decoders": [
+//                     { "type": "console", "label": "ITM", "port": 0 }
+//                 ]
+//             }
+//         }
+//     ]
+// }
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "cortex-debug",
+            "request": "launch",
+            "name": "Debug (OpenOCD)",
+            "servertype": "openocd",
+            "cwd": "${workspaceRoot}",
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "raw",
+            "executable": "build/BLCU_NEW.elf",
+            "device": "STM32H723ZG",
+            "configFiles": [
+                ".vscode/stlink.cfg",
+                ".vscode/stm32h7x.cfg"
+            ],
+            "svdFile": ".vscode/STM32H723.svd",
+            "swoConfig": {
+                "enabled": true,
+                "cpuFrequency": 8000000,
+                "swoFrequency": 2000000,
+                "source": "probe",
+                "decoders": [
+                    { "type": "console", "label": "ITM", "port": 0 }
+                ]
+            }
+        }
+    ]
+}

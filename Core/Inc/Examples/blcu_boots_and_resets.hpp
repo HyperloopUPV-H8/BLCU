@@ -28,7 +28,7 @@ void blcu_boots_and_resets(){
     }
     
 
-    STLIB::start(Board);
+    STLIB::start();
 
     for (DigitalOutput& boot: boots)
     {

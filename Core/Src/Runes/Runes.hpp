@@ -4,6 +4,9 @@
 DMA_HandleTypeDef hdma_adc1;
 DMA_HandleTypeDef hdma_adc2;
 DMA_HandleTypeDef hdma_adc3;
+DMA_HandleTypeDef hdma_i2c2_rx;
+DMA_HandleTypeDef hdma_i2c2_tx;
+I2C_HandleTypeDef hi2c2;
 ADC_HandleTypeDef hadc1;
 ADC_HandleTypeDef hadc2;
 ADC_HandleTypeDef hadc3;
@@ -15,7 +18,7 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim5;
-TIM_HandleTypeDef htim6;
+TIM_HandleTypeDef htim7;
 TIM_HandleTypeDef htim8;
 TIM_HandleTypeDef htim12;
 TIM_HandleTypeDef htim16;
@@ -28,7 +31,6 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 SPI_HandleTypeDef hspi3;
 FDCAN_HandleTypeDef hfdcan1;
-FDCAN_HandleTypeDef hfdcan3;
 
 
 /************************************************
@@ -40,7 +42,7 @@ FDCAN_HandleTypeDef hfdcan3;
 extern FDCAN_HandleTypeDef hfdcan1;
 
 FDCAN::Instance FDCAN::instance1 = { .TX = PD1, .RX = PD0, .hfdcan = &hfdcan1,
-									 .instance = FDCAN1, .dlc = FDCAN::DLC::BYTES_64,
+									 .instance = FDCAN1, .dlc = DLC::BYTES_64,
 									 .rx_location = FDCAN_RX_FIFO0, .fdcan_number = 1
 									};
 
@@ -101,15 +103,12 @@ bool UART::printf_ready = false;
 
 #endif
 /************************************************
- *              Communication-I2C
- ***********************************************/
-
-/************************************************
  *                 	  Encoder
  ***********************************************/
 #ifdef HAL_TIM_MODULE_ENABLED
+#define BASE TimerPeripheral::TIM_TYPE::BASE
 
-TimerPeripheral encoder_timer = TimerPeripheral(&htim8, {TIM8, 0, 65535}, "TIM 8");
+TimerPeripheral encoder_timer(&htim8, {BASE, 0, 65535}, "TIM 8");
 
 map<pair<Pin, Pin>, TimerPeripheral*> Encoder::pin_timer_map = {
 		{{PC6, PC7}, &encoder_timer}
@@ -121,25 +120,18 @@ map<pair<Pin, Pin>, TimerPeripheral*> Encoder::pin_timer_map = {
  ***********************************************/
 #ifdef HAL_TIM_MODULE_ENABLED
 
-TimerPeripheral::InitData init_data_timer1(TIM1);
-TimerPeripheral::InitData init_data_timer2(TIM2);
-TimerPeripheral::InitData init_data_timer3(TIM3);
-TimerPeripheral::InitData init_data_timer4(TIM4);
-TimerPeripheral::InitData init_data_timer12(TIM12);
-TimerPeripheral::InitData init_data_timer16(TIM16);
-TimerPeripheral::InitData init_data_timer17(TIM17);
-TimerPeripheral::InitData init_data_timer15(TIM15);
-TimerPeripheral::InitData init_data_timer23(TIM23, 275, UINT32_MAX - 1);
+#define BASE TimerPeripheral::TIM_TYPE::BASE
+#define ADVANCED TimerPeripheral::TIM_TYPE::ADVANCED
 
-TimerPeripheral timer1(&htim1, init_data_timer1, "TIM 1");
-TimerPeripheral timer2(&htim2, init_data_timer2, "TIM 2");
-TimerPeripheral timer3(&htim3, init_data_timer3, "TIM 3");
-TimerPeripheral timer4(&htim4, init_data_timer4, "TIM 4");
-TimerPeripheral timer12(&htim12, init_data_timer12, "TIM 12");
-TimerPeripheral timer16(&htim16, init_data_timer16, "TIM 16");
-TimerPeripheral timer17(&htim17, init_data_timer17, "TIM 17");
-TimerPeripheral timer15(&htim15, init_data_timer15, "TIM 15");
-TimerPeripheral timer23(&htim23, init_data_timer23, "TIM 23");
+TimerPeripheral timer1(&htim1, {ADVANCED}, "TIM 1");
+TimerPeripheral timer2(&htim2, {BASE}, "TIM 2");
+TimerPeripheral timer3(&htim3, {ADVANCED}, "TIM 3");
+TimerPeripheral timer4(&htim4, {ADVANCED}, "TIM 4");
+TimerPeripheral timer12(&htim12, {ADVANCED}, "TIM 12");
+TimerPeripheral timer16(&htim16, {BASE}, "TIM 16");
+TimerPeripheral timer17(&htim17, {BASE}, "TIM 17");
+TimerPeripheral timer15(&htim15, {ADVANCED}, "TIM 15");
+TimerPeripheral timer23(&htim23, {BASE, 275, UINT32_MAX - 1}, "TIM 23");
 
 vector<reference_wrapper<TimerPeripheral>> TimerPeripheral::timers = {
 		timer1,
@@ -155,36 +147,40 @@ vector<reference_wrapper<TimerPeripheral>> TimerPeripheral::timers = {
 
 
 #endif
+
 /************************************************
- *                     PWMservice
+ *                     PWM
  ***********************************************/
 #ifdef HAL_TIM_MODULE_ENABLED
 
-map<Pin, PWMservice::Instance> PWMservice::available_instances = {
-	{PB14, PWMservice::Instance(&timer12, TIM_CHANNEL_1, NORMAL)},
-	{PB15, PWMservice::Instance(&timer12, TIM_CHANNEL_2, NORMAL)},
-	{PB4, PWMservice::Instance(&timer3, TIM_CHANNEL_1, NORMAL)},
-	{PB5, PWMservice::Instance(&timer3, TIM_CHANNEL_2, NORMAL)},
-	{PC8, PWMservice::Instance(&timer3, TIM_CHANNEL_3, NORMAL)},
-	{PD12, PWMservice::Instance(&timer4, TIM_CHANNEL_1, NORMAL)},
-	{PD13, PWMservice::Instance(&timer4, TIM_CHANNEL_2, NORMAL)},
-	{PD15, PWMservice::Instance(&timer4, TIM_CHANNEL_4, NORMAL)},
-	{PE14, PWMservice::Instance(&timer1, TIM_CHANNEL_4, NORMAL)},
-	{PE6, PWMservice::Instance(&timer15, TIM_CHANNEL_2, NORMAL)},
-	{PF1, PWMservice::Instance(&timer23, TIM_CHANNEL_2, NORMAL)},
-	{PF2, PWMservice::Instance(&timer23, TIM_CHANNEL_3, NORMAL)},
-	{PF3, PWMservice::Instance(&timer23, TIM_CHANNEL_4, NORMAL)},
+#define NORMAL TimerPeripheral::PWM_MODE::NORMAL
+#define PHASED TimerPeripheral::PWM_MODE::PHASED
+
+PWMmap TimerPeripheral::available_pwm  = {
+	{PB14, {timer12, {TIM_CHANNEL_1, NORMAL}}},
+	{PB15, {timer12, {TIM_CHANNEL_2, NORMAL}}},
+	{PB4, {timer3, {TIM_CHANNEL_1, PHASED}}},
+	{PB5, {timer3, {TIM_CHANNEL_2, NORMAL}}},
+	{PC8, {timer3, {TIM_CHANNEL_3, NORMAL}}},
+	{PD12, {timer4, {TIM_CHANNEL_1, NORMAL}}},
+	{PD13, {timer4, {TIM_CHANNEL_2, NORMAL}}},
+	{PD15, {timer4, {TIM_CHANNEL_4, NORMAL}}},
+	{PE14, {timer1, {TIM_CHANNEL_4, PHASED}}},
+	{PE6, {timer15, {TIM_CHANNEL_2, NORMAL}}},
+	{PF1, {timer23, {TIM_CHANNEL_2, NORMAL}}},
+	{PF2, {timer23, {TIM_CHANNEL_3, NORMAL}}},
+	{PF3, {timer23, {TIM_CHANNEL_4, NORMAL}}},
+	{PE5, {timer15, {TIM_CHANNEL_1, NORMAL}}},
+	{PE11, {timer1, {TIM_CHANNEL_2, NORMAL}}},
 };
 
-map<Pin, PWMservice::Instance> PWMservice::available_instances_negated = {};
-
-map<pair<Pin, Pin>, PWMservice::Instance> PWMservice::available_instances_dual = {
-	{{PB8,PB6}, PWMservice::Instance(&timer16, TIM_CHANNEL_1, DUAL)},
-	{{PB9,PB7}, PWMservice::Instance(&timer17, TIM_CHANNEL_1, DUAL)},
-	{{PE11,PE10}, PWMservice::Instance(&timer1, TIM_CHANNEL_2, DUAL)},
-	{{PE13,PE12}, PWMservice::Instance(&timer1, TIM_CHANNEL_3, DUAL)},
-	{{PE5,PE4}, PWMservice::Instance(&timer15, TIM_CHANNEL_1, DUAL)},
-	{{PE9,PE8}, PWMservice::Instance(&timer1, TIM_CHANNEL_1, DUAL)},
+DualPWMmap TimerPeripheral::available_dual_pwms = {
+	{{PB8,PB6}, {timer16, {TIM_CHANNEL_1, NORMAL}}},
+	{{PB9,PB7}, {timer17, {TIM_CHANNEL_1, PHASED}}},
+	{{PE11,PE10}, {timer1, {TIM_CHANNEL_2, PHASED}}},
+	{{PE13,PE12}, {timer1, {TIM_CHANNEL_3, PHASED}}},
+	{{PE5,PE4}, {timer15, {TIM_CHANNEL_1, NORMAL}}},
+	{{PE9,PE8}, {timer1, {TIM_CHANNEL_1, NORMAL}}},
 };
 
 #endif
@@ -286,4 +282,20 @@ map<uint16_t, ExternalInterrupt::Instance> ExternalInterrupt::instances = {
 	{PE1.gpio_pin, Instance(EXTI1_IRQn)}
 };
 
+#endif
+
+/************************************************
+ *					   I2C
+ ***********************************************/
+
+#ifdef HAL_I2C_MODULE_ENABLED
+extern I2C_HandleTypeDef hi2c2;
+I2C::Instance I2C::instance2 = { .SCL = PF1, .SDA = PB11, .hi2c = &hi2c2, .instance = I2C2, .RX_DMA = DMA::Stream::DMA1Stream3, .TX_DMA = DMA::Stream::DMA1Stream4};
+I2C::Peripheral I2C::i2c2 = I2C::Peripheral::peripheral2;
+unordered_map<I2C::Peripheral, I2C::Instance*> I2C::available_i2cs = {
+	{I2C::i2c2, &I2C::instance2}
+};
+unordered_map<uint32_t, uint32_t> I2C::available_speed_frequencies = {
+	{100, 0x60404E72}
+};
 #endif

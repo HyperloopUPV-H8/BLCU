@@ -1,4 +1,4 @@
-/* USER CODE BEGIN Header */
+	/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * File Name          : ethernetif.c
@@ -54,9 +54,9 @@
 /* Private variables ---------------------------------------------------------*/
 /*
 @Note: This interface is implemented to operate in zero-copy mode only:
-        - Rx buffers will be allocated from LwIP stack memory heap,
-          then passed to ETH HAL driver.
-        - Tx buffers will be allocated from LwIP stack memory heap,
+        - Rx buffers are allocated statically and passed directly to the LwIP stack
+          they will return back to ETH DMA after been processed by the stack.
+        - Tx Buffers will be allocated from LwIP stack memory heap,
           then passed to ETH HAL driver.
 
 @Notes:
@@ -94,17 +94,20 @@ LWIP_MEMPOOL_DECLARE(RX_POOL, ETH_RX_BUFFER_CNT, sizeof(RxBuff_t), "Zero-copy RX
 /* Variable Definitions */
 static uint8_t RxAllocStatus;
 
+__IO uint32_t TxPkt = 0;
+__IO uint32_t RxPkt = 0;
+
 #if defined ( __ICCARM__ ) /*!< IAR Compiler */
 
 #pragma location=0x30000000
 ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
-#pragma location=0x30000060
+#pragma location=0x30000100
 ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
 
 #elif defined ( __CC_ARM )  /* MDK ARM Compiler */
 
 __attribute__((at(0x30000000))) ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT]; /* Ethernet Rx DMA Descriptors */
-__attribute__((at(0x30000060))) ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
+__attribute__((at(0x30000100))) ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; /* Ethernet Tx DMA Descriptors */
 
 #elif defined ( __GNUC__ ) /* GNU Compiler */
 
@@ -114,7 +117,33 @@ ETH_DMADescTypeDef DMATxDscrTab[ETH_TX_DESC_CNT] __attribute__((section(".TxDecr
 #endif
 
 /* USER CODE BEGIN 2 */
+/* ETH_CODE: placement of RX_POOL
+ * Please note this was tested only for GCC compiler.
+ * Additional code needed in linkerscript for GCC.
+ *
+ * Also this buffer can be placed in D1 SRAM
+ * if there is not sufficient space in D2.
+ * This can be case of STM32H72x/H73x devices.
+ * However the 32-byte alignment should be forced.
+ * Below is example of placement into BSS section
+ *
+ * . = ALIGN(32);
+ * *(.Rx_PoolSection)
+ * . = ALIGN(4);
+ * _ebss = .;
+ *  __bss_end__ = _ebss;
+ * } >RAM_D1
+ */
+#if defined ( __ICCARM__ ) /*!< IAR Compiler */
+#pragma location = 0x30000200
+extern u8_t memp_memory_RX_POOL_base[];
 
+#elif defined ( __CC_ARM )  /* MDK ARM Compiler */
+__attribute__((at(0x30000200)) extern u8_t memp_memory_RX_POOL_base[];
+
+#elif defined ( __GNUC__ ) /* GNU Compiler */
+__attribute__((section(".Rx_PoolSection"))) extern u8_t memp_memory_RX_POOL_base[];
+#endif
 /* USER CODE END 2 */
 
 /* Global Ethernet handle */
@@ -173,7 +202,7 @@ static void low_level_init(struct netif *netif)
   heth.Init.MediaInterface = HAL_ETH_RMII_MODE;
   heth.Init.TxDesc = DMATxDscrTab;
   heth.Init.RxDesc = DMARxDscrTab;
-  heth.Init.RxBuffLen = 1524;
+  heth.Init.RxBuffLen = 1536;
 
   /* USER CODE BEGIN MACADDRESS */
 
@@ -231,6 +260,7 @@ static void low_level_init(struct netif *netif)
   }
   else
   {
+	HAL_NVIC_SystemReset();
     Error_Handler();
   }
 #endif /* LWIP_ARP || LWIP_ETHERNET */
@@ -261,7 +291,7 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
   uint32_t i = 0U;
   struct pbuf *q = NULL;
   err_t errval = ERR_OK;
-  ETH_BufferTypeDef Txbuffer[ETH_TX_DESC_CNT] = {0};
+  ETH_BufferTypeDef Txbuffer[ETH_TX_DESC_CNT];
 
   memset(Txbuffer, 0 , ETH_TX_DESC_CNT*sizeof(ETH_BufferTypeDef));
 
@@ -290,9 +320,7 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
   TxConfig.TxBuffer = Txbuffer;
   TxConfig.pData = p;
 
-  SCB_CleanInvalidateDCache_by_Addr(p->payload, p->len);
-
-  HAL_ETH_Transmit(&heth, &TxConfig, 0);
+  HAL_ETH_Transmit(&heth, &TxConfig, ETH_DMA_TRANSMIT_TIMEOUT);
 
   return errval;
 }
@@ -439,6 +467,7 @@ void pbuf_free_custom(struct pbuf *p)
   if (RxAllocStatus == RX_ALLOC_ERROR)
   {
     RxAllocStatus = RX_ALLOC_OK;
+    RxPkt = 1 ;
   }
 }
 
@@ -498,7 +527,7 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef* ethHandle)
     GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = GPIO_PIN_1|RMII_MDIO_Pin|GPIO_PIN_7;
+    GPIO_InitStruct.Pin = RMII_REF_CLK_Pin|RMII_MDIO_Pin|RMII_CRS_DV_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -553,7 +582,7 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef* ethHandle)
     */
     HAL_GPIO_DeInit(GPIOC, RMII_MDC_Pin|RMII_RXD0_Pin|RMII_RXD1_Pin);
 
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_1|RMII_MDIO_Pin|GPIO_PIN_7);
+    HAL_GPIO_DeInit(GPIOA, RMII_REF_CLK_Pin|RMII_MDIO_Pin|RMII_CRS_DV_Pin);
 
     HAL_GPIO_DeInit(RMII_TXD1_GPIO_Port, RMII_TXD1_Pin);
 
@@ -635,7 +664,6 @@ int32_t ETH_PHY_IO_WriteReg(uint32_t DevAddr, uint32_t RegAddr, uint32_t RegVal)
   return 0;
 }
 
-
 /**
   * @brief  Get the time in millisecons used for internal PHY driver process.
   * @retval Time value
@@ -647,6 +675,7 @@ int32_t ETH_PHY_IO_GetTick(void)
 
 /**
   * @brief  Check the ETH link state then update ETH driver and netif link accordingly.
+  * @param  argument: netif
   * @retval None
   */
 void ethernet_link_check_state(struct netif *netif)
@@ -709,6 +738,7 @@ void ethernet_link_check_state(struct netif *netif)
 void HAL_ETH_RxAllocateCallback(uint8_t **buff)
 {
 /* USER CODE BEGIN HAL ETH RxAllocateCallback */
+
   struct pbuf_custom *p = LWIP_MEMPOOL_ALLOC(RX_POOL);
   if (p)
   {

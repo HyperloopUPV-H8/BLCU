@@ -16,13 +16,13 @@ int adc_example(void)
 		ErrorHandler("No se ha podido registrar el adc");
 	}
 
-	STLIB::start(Nucleo, "192.168.1.4", "255.255.0.0", "192.168.1.1", UART::uart2);
+	STLIB::start("192.168.1.4", "255.255.0.0", "192.168.1.1", UART::uart2);
 	printf("\n\n\n\n\n\n\n\n\n\n");
 
 	ADC::turn_on(adc.value());
 
 	while (1) {
-		float value = ADC::get_value(adc.value()).value();
+		float value = ADC::get_value(adc.value());
 		printf("Value %f | \r", value);
 		HAL_Delay(50);
 
