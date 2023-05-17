@@ -34,13 +34,16 @@ public:
 
 	typedef struct {
 		BLCU::Target target;
-		double version;
+		uint16_t version;
 
 		void clean_data(){
 			target = BLCU::Target::NOTARGET;
 			version = 0;
 		}
+
 	}orders_data_t;
+
+	static orders_data_t orders_data;
 
 private:
     static StateMachine blcu_state_machine;
@@ -59,14 +62,9 @@ private:
 
     static string ip, mask, gateway;
     static uint32_t port;
-    static ServerSocket tcp_socket;
-    static orders_data_t orders_data;
+    static ServerSocket* tcp_socket;
 
-	static HeapOrder write_program_order;
-	static HeapOrder read_program_order;
-	static HeapOrder erase_program_order;
-	static HeapOrder get_version_order;
-	static HeapOrder reset_all_order;
+
 public:
 
     static void reset_all();

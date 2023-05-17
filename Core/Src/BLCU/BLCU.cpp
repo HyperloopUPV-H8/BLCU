@@ -25,43 +25,14 @@ string BLCU::mask = "255.255.0.0";
 string BLCU::gateway = "192.167.1.1";
 uint32_t BLCU::port = 50500;
 
-ServerSocket BLCU::tcp_socket = ServerSocket(BLCU::ip, BLCU::port);
+ServerSocket* BLCU::tcp_socket = nullptr;
 
 BLCU::orders_data_t BLCU::orders_data = {
 		BLCU::Target::NOTARGET,
 		0
 };
 
-HeapOrder BLCU::write_program_order = {
-		700,
-		&BLCU::orders_data.target,
-};
-
-
-HeapOrder BLCU::read_program_order = {
-		701,
-		&BLCU::orders_data.target,
-};
-
-
-HeapOrder BLCU::erase_program_order = {
-		702,
-		&BLCU::orders_data.target,
-};
-
-
-HeapOrder BLCU::get_version_order = {
-		703,
-		&BLCU::orders_data.target,
-		&BLCU::orders_data.version,
-};
-
-
-HeapOrder BLCU::reset_all_order = {
-		704,
-		&BLCU::orders_data.target,
-
-};
+extern HeapOrder ack;
 
 /***********************************************/
 //                  Public methods
@@ -107,6 +78,8 @@ void BLCU::read_program(){
 	BLCU::__send_to_bootmode(BLCU::orders_data.target);
 
 	BTFTP::on(BTFTP::Mode::READ);
+
+	BLCU::tcp_socket->send_order(ack);
 }
 
 void BLCU::write_program(){
@@ -116,6 +89,8 @@ void BLCU::write_program(){
 	BLCU::__send_to_bootmode(BLCU::orders_data.target);
 
 	BTFTP::on(BTFTP::Mode::WRITE);
+
+	BLCU::tcp_socket->send_order(ack);
 }
 
 void BLCU::erase_program(){
@@ -142,6 +117,7 @@ void BLCU::set_up()
 
 void BLCU::start(){
     STLIB::start(ip, mask, gateway, UART::uart2);
+    BLCU::tcp_socket = new ServerSocket(BLCU::ip, BLCU::port);
     BTFTP::start();
 
 	BLCU::__resets_start();
@@ -208,6 +184,7 @@ void BLCU::__leds_start(){
 void BLCU::__set_up_state_machine(){
     blcu_state_machine = StateMachine(READY);
     blcu_state_machine.add_state(BOOTING);
+    blcu_state_machine.add_state(FAULT);
 
     blcu_state_machine.add_transition(READY, FAULT, [&](){
         if(ErrorHandlerModel::error_triggered != 0){
