@@ -1,0 +1,22 @@
+#compiler output
+Debug/
+Release/
+cmake/build/
+compile_commands.json
+
+#test folder
+Pruebas/
+PRUEBAS/
+
+#ccls cache
+.ccls-cache/
+.cache/
+
+#vscode 
+.vscode
+.cproject
+.cache
+
+.settings
+build
+!build/build.sh
