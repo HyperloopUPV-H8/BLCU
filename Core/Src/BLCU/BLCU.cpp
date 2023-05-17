@@ -62,7 +62,7 @@ void BLCU::get_version(){
 	BLCU::specific_state_machine.force_change_state(BOOTING);
 
 	uint8_t temporal_value = 0;
-	FDCB::get_version(temporal_value);
+	FDCB::get_version(temporal_value);//TODO: molaria manda NACK si falla
 	BLCU::orders_data.version = temporal_value;
 
 	//TODO: ahora se deberia mandar el valor de la version
@@ -96,7 +96,7 @@ void BLCU::write_program(){
 void BLCU::erase_program(){
 	BLCU::specific_state_machine.force_change_state(BOOTING);
 
-	FDCB::erase_memory();
+	FDCB::erase_memory();//TODO: molaria manda NACK si falla
 
 	BLCU::orders_data.clean_data();
 	BLCU::specific_state_machine.force_change_state(READY);
