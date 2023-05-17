@@ -12,9 +12,12 @@
 #include "FDCBootloader/BootloaderTFTP.hpp"
 #include "ServerSocket.hpp"
 
+#define BLCU_IP 		"192.168.1.4"
+#define BLCU_MASK 		"255.255.0.0"
+#define BLCU_GATEWAY 	"192.168.1.1"
+#define BLCU_PORT		((uint32_t)50500)
 
-class BLCU {
-public:
+namespace BLCU {
 
     enum Target{
         VCU,
@@ -43,81 +46,70 @@ public:
 
 	}orders_data_t;
 
-	static orders_data_t orders_data;
 
-private:
-    static StateMachine blcu_state_machine;
+    StateMachine specific_state_machine;
+    StateMachine general_state_machine;
 
-    static unordered_map<Target, DigitalOutput> resets;
-    static unordered_map<Target, DigitalOutput> boots;
+    unordered_map<Target, DigitalOutput> resets;
+    unordered_map<Target, DigitalOutput> boots;
 
-    static uint8_t fdcan;
-    static DigitalOutput LED_OPERATIONAL;
-    static DigitalOutput LED_FAULT;
-    static DigitalOutput LED_CAN;
-    static DigitalOutput LED_FLASH;
-    static DigitalOutput LED_SLEEP;
+    uint8_t fdcan;
+    DigitalOutput LED_OPERATIONAL;
+    DigitalOutput LED_FAULT;
+    DigitalOutput LED_CAN;
+    DigitalOutput LED_FLASH;
+    DigitalOutput LED_SLEEP;
 
-    static Target current_target;
+    Target current_target;
 
-    static string ip, mask, gateway;
-    static uint32_t port;
-    static ServerSocket* tcp_socket;
+    string ip, mask, gateway;
+    uint32_t port;
+    ServerSocket tcp_socket;
 
+	orders_data_t orders_data;
+	HeapOrder write_program_order;
+	HeapOrder read_program_order;
+	HeapOrder erase_program_order;
+	HeapOrder get_version_order;
+	HeapOrder reset_all_order;
+	HeapOrder ack;
 
-public:
+    void set_up();
+	void start();
+	void update();
 
-    static void reset_all();
-
-    static void force_quit_bootmode(); //ESta seguramente se vaya fuera
-
-    static void get_version();
-
-    static void read_program();
-
-    static void write_program();
-
-    static void erase_program();
-
-    static void finish_write_read_order();
-
-    static void set_up();
-
-    static void start();
-
-    static void update();
-
-private:
 	/***********************************************/
-	//                  Orders methods
+	//              Orders methods
 	/***********************************************/
+    void reset_all();
+    void force_quit_bootmode(); //ESta seguramente se vaya fuera
+    void get_version();
+    void read_program();
+    void write_program();
+    void erase_program();
+    void finish_write_read_order();
 
-    static void __send_to_bootmode(const BLCU::Target& target);
-
-    static void __turn_off_all_boards();
+    void __send_to_bootmode(const BLCU::Target& target);
+    void __turn_off_all_boards();
 
     /***********************************************/
 	//                  Start methods
 	/***********************************************/
-    static void __resets_start();
-
-    static void __boots_start();
-
-    static void __leds_start();
+    void __tcp_start();
+    void __resets_start();
+    void __boots_start();
+    void __leds_start();
 
 	/***********************************************/
 	//                  SetUp methods
 	/***********************************************/
-    static void __set_up_state_machine(); //TODO:
-
-    static void __set_up_orders(); //TODO:
-
-    static void __set_up_peripherals();
-
-    static void __set_up_resets();
-
-    static void __set_up_boots();
-
-    static void __set_up_leds();
+    void __set_up_state_machine(); //TODO: revisar
+    void __set_up_orders();
+    void __set_up_peripherals();
+    void __set_up_fdcan();
+    void __set_up_ethernet();
+    void __set_up_resets();
+    void __set_up_boots();
+    void __set_up_leds();
 
 };

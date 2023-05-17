@@ -7,37 +7,32 @@
 
 #include "BLCU/BLCU.hpp"
 
-StateMachine BLCU::blcu_state_machine = StateMachine();
 
-unordered_map<BLCU::Target, DigitalOutput> BLCU::resets = {};
-unordered_map<BLCU::Target, DigitalOutput> BLCU::boots = {};
+void BLCU::set_up()
+{
+	BLCU::__set_up_orders();
+    BLCU::__set_up_peripherals();
+    BLCU::__set_up_state_machine();
+}
 
-uint8_t BLCU::fdcan = 0;
+void BLCU::start(){
+    STLIB::start(ip, mask, gateway, UART::uart2);
+    BLCU::__tcp_start();
+    BTFTP::start();
 
-DigitalOutput BLCU::LED_OPERATIONAL = DigitalOutput();
-DigitalOutput BLCU::LED_FAULT = DigitalOutput();
-DigitalOutput BLCU::LED_CAN = DigitalOutput();
-DigitalOutput BLCU::LED_FLASH = DigitalOutput();
-DigitalOutput BLCU::LED_SLEEP = DigitalOutput();
+	BLCU::__resets_start();
+    BLCU::__boots_start();
+    BLCU::__leds_start();
+}
 
-string BLCU::ip = "192.168.1.4";
-string BLCU::mask = "255.255.0.0";
-string BLCU::gateway = "192.167.1.1";
-uint32_t BLCU::port = 50500;
+void BLCU::update(){
+    STLIB::update();
+}
 
-ServerSocket* BLCU::tcp_socket = nullptr;
 
-BLCU::orders_data_t BLCU::orders_data = {
-		BLCU::Target::NOTARGET,
-		0
-};
-
-extern HeapOrder ack;
-
-/***********************************************/
-//                  Public methods
-/***********************************************/
-
+	/***********************************************/
+	//                  Orders methods
+	/***********************************************/
 
 void BLCU::reset_all(){
 	for (auto& [target, reset]: resets)
@@ -49,6 +44,8 @@ void BLCU::reset_all(){
     {
         reset.turn_on();
     }
+
+    BLCU::orders_data.clean_data();
 }
 
 void BLCU::force_quit_bootmode(){//TODO: no deberia existir xD
@@ -62,80 +59,57 @@ void BLCU::force_quit_bootmode(){//TODO: no deberia existir xD
 }
 
 void BLCU::get_version(){
-	BLCU::blcu_state_machine.force_change_state(BOOTING);
+	BLCU::specific_state_machine.force_change_state(BOOTING);
 
 	uint8_t temporal_value = 0;
 	FDCB::get_version(temporal_value);
 	BLCU::orders_data.version = temporal_value;
 
-	BLCU::blcu_state_machine.force_change_state(READY);
+	//TODO: ahora se deberia mandar el valor de la version
+
+	BLCU::orders_data.clean_data();
+	BLCU::specific_state_machine.force_change_state(READY);
 }
 
 void BLCU::read_program(){
-	BLCU::blcu_state_machine.force_change_state(BOOTING);
+	BLCU::specific_state_machine.force_change_state(BOOTING);
 
 	BLCU::__turn_off_all_boards();
 	BLCU::__send_to_bootmode(BLCU::orders_data.target);
 
 	BTFTP::on(BTFTP::Mode::READ);
 
-	BLCU::tcp_socket->send_order(ack);
+	BLCU::tcp_socket.send_order(ack);
 }
 
 void BLCU::write_program(){
-	BLCU::blcu_state_machine.force_change_state(BOOTING);
+	BLCU::specific_state_machine.force_change_state(BOOTING);
 
 	BLCU::__turn_off_all_boards();
 	BLCU::__send_to_bootmode(BLCU::orders_data.target);
 
 	BTFTP::on(BTFTP::Mode::WRITE);
 
-	BLCU::tcp_socket->send_order(ack);
+	BLCU::tcp_socket.send_order(ack);
 }
 
 void BLCU::erase_program(){
-	BLCU::blcu_state_machine.force_change_state(BOOTING);
+	BLCU::specific_state_machine.force_change_state(BOOTING);
 
 	FDCB::erase_memory();
 
-	BLCU::blcu_state_machine.force_change_state(READY);
+	BLCU::orders_data.clean_data();
+	BLCU::specific_state_machine.force_change_state(READY);
 }
 
 
 void BLCU::finish_write_read_order(){
 	BTFTP::off();
 
-	BLCU::blcu_state_machine.force_change_state(READY);
+	BLCU::orders_data.clean_data();
+	BLCU::specific_state_machine.force_change_state(READY);
 }
 
-void BLCU::set_up()
-{
-	BLCU::__set_up_orders();
-    BLCU::__set_up_peripherals();
-    BLCU::__set_up_state_machine();
-}
-
-void BLCU::start(){
-    STLIB::start(ip, mask, gateway, UART::uart2);
-    BLCU::tcp_socket = new ServerSocket(BLCU::ip, BLCU::port);
-    BTFTP::start();
-
-	BLCU::__resets_start();
-    BLCU::__boots_start();
-    BLCU::__leds_start();
-}
-
-void BLCU::update(){
-    STLIB::update();
-}
-
-/***********************************************/
-//                  Private methods
-/***********************************************/
-
-	/***********************************************/
-	//                  Orders methods
-	/***********************************************/
 
 void BLCU::__send_to_bootmode(const BLCU::Target& target){
 	BLCU::boots[target].turn_on();
@@ -146,7 +120,7 @@ void BLCU::__send_to_bootmode(const BLCU::Target& target){
 }
 
 void BLCU::__turn_off_all_boards(){
-	for (auto& [target, reset_pin]: resets)
+	for (auto& [target, reset_pin]: BLCU::resets)
 	{
 		reset_pin.turn_off();
 	}
@@ -155,15 +129,19 @@ void BLCU::__turn_off_all_boards(){
 	/***********************************************/
 	//                  Start methods
 	/***********************************************/
+void BLCU::__tcp_start(){
+    BLCU::tcp_socket = ServerSocket(BLCU::ip, BLCU::port);
+}
+
 void BLCU::__resets_start(){
-    for (auto& [target, reset_pin]: resets)
+    for (auto& [target, reset_pin]: BLCU::resets)
     {
     	reset_pin.turn_on();
     }
 }
 
 void BLCU::__boots_start(){
-    for (auto& [target, boot_pin]: boots)
+    for (auto& [target, boot_pin]: BLCU::boots)
     {
     	boot_pin.turn_off();
     }
@@ -181,78 +159,32 @@ void BLCU::__leds_start(){
 	//                  SetUp methods
 	/***********************************************/
 
-void BLCU::__set_up_state_machine(){
-    blcu_state_machine = StateMachine(READY);
-    blcu_state_machine.add_state(BOOTING);
-    blcu_state_machine.add_state(FAULT);
-
-    blcu_state_machine.add_transition(READY, FAULT, [&](){
-        if(ErrorHandlerModel::error_triggered != 0){
-            return true;
-        }
-        return false;
-    });
-
-    blcu_state_machine.add_transition(BOOTING, FAULT, [&](){
-        if(ErrorHandlerModel::error_triggered != 0){
-        	FDCB::erase_memory();
-            return true;
-        }
-        return false;
-    });
-
-
-    blcu_state_machine.add_enter_action([&](){
-	   LED_OPERATIONAL.turn_off();
-	   LED_FAULT.turn_on();
-	   LED_CAN.turn_off();
-   }, FAULT);
-
-    blcu_state_machine.add_enter_action([&](){
-        LED_OPERATIONAL.turn_on();
-        LED_FAULT.turn_off();
-        LED_CAN.turn_off();
-
-        BLCU::reset_all();
-    	BLCU::orders_data.clean_data();
-    }, READY);
-
-    blcu_state_machine.add_enter_action([&](){
-		LED_OPERATIONAL.turn_on();
-		LED_FAULT.turn_off();
-		LED_CAN.turn_on();
-
-		BLCU::__turn_off_all_boards();
-		BLCU::__send_to_bootmode(BLCU::orders_data.target);
-
-	}, BOOTING);
-
-
-    Time::register_low_precision_alarm(1, [&](){
-    	blcu_state_machine.check_transitions();
-	});
-
-}
-
-void BLCU::__set_up_orders(){
-//	BLCU::write_program_order.set_callback(BLCU::write_program);
-//	BLCU::read_program_order.set_callback(BLCU::read_program);
-//	BLCU::erase_program_order.set_callback(BLCU::erase_program);
-//	BLCU::get_version_order.set_callback(BLCU::get_version);
-//	BLCU::reset_all_order.set_callback(BLCU::reset_all);
-}
 
 void BLCU::__set_up_peripherals(){
+	BLCU::__set_up_fdcan();
+	BLCU::__set_up_ethernet();
     BLCU::__set_up_resets();
     BLCU::__set_up_boots();
     BLCU::__set_up_leds();
+}
 
-    optional<uint8_t> fdcan_temporal = FDCAN::inscribe(FDCAN::fdcan1);
+void BLCU::__set_up_fdcan(){
+	optional<uint8_t> fdcan_temporal = FDCAN::inscribe(FDCAN::fdcan1);
 
-    if (not fdcan_temporal.has_value())
-    {
-        ErrorHandler("Unable to inscribe fdcan1");
-    }
+	if (not fdcan_temporal.has_value())
+	{
+		ErrorHandler("Unable to inscribe fdcan1");
+		return;
+	}
+
+	BLCU::fdcan = fdcan_temporal.value();
+}
+
+void BLCU::__set_up_ethernet(){
+	BLCU::ip = BLCU_IP;
+	BLCU::mask = BLCU_MASK;
+	BLCU::gateway = BLCU_GATEWAY;
+	BLCU::port = BLCU_PORT;
 }
 
 void BLCU::__set_up_resets(){
