@@ -170,6 +170,7 @@ CMakeFiles/BLCU_NEW.elf.dir/Core/Src/main.cpp.obj: \
  /opt/malva/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/dhcp.h \
  /opt/malva/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h \
  /opt/malva/ST-LIB/LWIP/Target/ethernetif.h \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/BLCU/BLCU.hpp \
  /opt/malva/ST-LIB/Inc/ST-LIB.hpp /opt/malva/ST-LIB/Inc/HALAL/HALAL.hpp \
  /opt/malva/ST-LIB/Inc/HALAL/Models/HALconfig/HALconfig.hpp \
  /opt/malva/ST-LIB/Inc/ST-LIB_LOW/ErrorHandler/ErrorHandler.hpp \
@@ -422,30 +423,12 @@ CMakeFiles/BLCU_NEW.elf.dir/Core/Src/main.cpp.obj: \
  /opt/malva/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/PI.hpp \
  /opt/malva/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/PID.hpp \
  /opt/malva/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/Saturator.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Src/Runes/Runes.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Src/Runes/Pins.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/FDCBootloader/FDCBootloader.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/FDCBootloader/BootloaderTFTP.hpp \
  /opt/malva/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_server.h \
  /opt/malva/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_opts.h \
  /opt/malva/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/prot/iana.h \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/BLCU/BLCU.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/examples_includes.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/Bootloader/bootloader_includes.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/Bootloader/get_order_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/adc_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/input_capture_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/protection_manager.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/sensors_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/exti_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/clock_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/low_time_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/high_time_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/state_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/can_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/halfbridge_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/leds_example.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/Examples/blcu_boots_and_resets.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/BLCU/Utilities/utilities.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/BLCU/Utilities/udp_packet_test.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/BLCU/Utilities/printf_freq.hpp
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/BLCU/Utilities/orders_data.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/BLCU/Utilities/Target.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Src/Runes/Runes.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Src/Runes/Pins.hpp

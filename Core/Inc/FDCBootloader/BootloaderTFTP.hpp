@@ -13,7 +13,6 @@
 #include "lwip/apps/tftp_server.h"
 #include "ErrorHandler/ErrorHandler.hpp"
 #include "FDCBootloader/FDCBootloader.hpp"
-#include "BLCU/BLCU.hpp"
 #include "Flash/Flash.hpp"
 
 //#ifdef HAL_ETH_MODULE_ENABLED

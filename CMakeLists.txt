@@ -9,7 +9,8 @@ set(STLIB_DIR /opt/malva/ST-LIB)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
 
 add_subdirectory(${STLIB_DIR} ${STLIB_DIR}/build)
-add_executable(${EXECUTABLE} 
+add_executable(
+  ${EXECUTABLE} 
   Core/Src/main.cpp 
   Core/Src/syscalls.c 
   Core/Src/stm32h7xx_hal_msp.c
@@ -17,6 +18,9 @@ add_executable(${EXECUTABLE}
   Core/Src/sysmem.c
   Core/Src/system_stm32h7xx.c
   Core/Startup/startup_stm32h723zgtx.s
+  Core/Src/BLCU/BLCU.cpp
+  Core/Src/FDCBootloader/FDCBootloader.cpp
+  Core/Src/FDCBootloader/BootloaderTFTP.cpp
   )
 
 target_link_libraries(${EXECUTABLE} st-lib)

@@ -142,6 +142,78 @@ st-lib/fast:
 	$(MAKE) $(MAKESILENT) -f /opt/malva/ST-LIB/build/CMakeFiles/st-lib.dir/build.make /opt/malva/ST-LIB/build/CMakeFiles/st-lib.dir/build
 .PHONY : st-lib/fast
 
+Core/Src/BLCU/BLCU.obj: Core/Src/BLCU/BLCU.cpp.obj
+.PHONY : Core/Src/BLCU/BLCU.obj
+
+# target to build an object file
+Core/Src/BLCU/BLCU.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BLCU_NEW.elf.dir/build.make CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj
+.PHONY : Core/Src/BLCU/BLCU.cpp.obj
+
+Core/Src/BLCU/BLCU.i: Core/Src/BLCU/BLCU.cpp.i
+.PHONY : Core/Src/BLCU/BLCU.i
+
+# target to preprocess a source file
+Core/Src/BLCU/BLCU.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BLCU_NEW.elf.dir/build.make CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.i
+.PHONY : Core/Src/BLCU/BLCU.cpp.i
+
+Core/Src/BLCU/BLCU.s: Core/Src/BLCU/BLCU.cpp.s
+.PHONY : Core/Src/BLCU/BLCU.s
+
+# target to generate assembly for a file
+Core/Src/BLCU/BLCU.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BLCU_NEW.elf.dir/build.make CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.s
+.PHONY : Core/Src/BLCU/BLCU.cpp.s
+
+Core/Src/FDCBootloader/BootloaderTFTP.obj: Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj
+.PHONY : Core/Src/FDCBootloader/BootloaderTFTP.obj
+
+# target to build an object file
+Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BLCU_NEW.elf.dir/build.make CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj
+.PHONY : Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj
+
+Core/Src/FDCBootloader/BootloaderTFTP.i: Core/Src/FDCBootloader/BootloaderTFTP.cpp.i
+.PHONY : Core/Src/FDCBootloader/BootloaderTFTP.i
+
+# target to preprocess a source file
+Core/Src/FDCBootloader/BootloaderTFTP.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BLCU_NEW.elf.dir/build.make CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.i
+.PHONY : Core/Src/FDCBootloader/BootloaderTFTP.cpp.i
+
+Core/Src/FDCBootloader/BootloaderTFTP.s: Core/Src/FDCBootloader/BootloaderTFTP.cpp.s
+.PHONY : Core/Src/FDCBootloader/BootloaderTFTP.s
+
+# target to generate assembly for a file
+Core/Src/FDCBootloader/BootloaderTFTP.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BLCU_NEW.elf.dir/build.make CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.s
+.PHONY : Core/Src/FDCBootloader/BootloaderTFTP.cpp.s
+
+Core/Src/FDCBootloader/FDCBootloader.obj: Core/Src/FDCBootloader/FDCBootloader.cpp.obj
+.PHONY : Core/Src/FDCBootloader/FDCBootloader.obj
+
+# target to build an object file
+Core/Src/FDCBootloader/FDCBootloader.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BLCU_NEW.elf.dir/build.make CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj
+.PHONY : Core/Src/FDCBootloader/FDCBootloader.cpp.obj
+
+Core/Src/FDCBootloader/FDCBootloader.i: Core/Src/FDCBootloader/FDCBootloader.cpp.i
+.PHONY : Core/Src/FDCBootloader/FDCBootloader.i
+
+# target to preprocess a source file
+Core/Src/FDCBootloader/FDCBootloader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BLCU_NEW.elf.dir/build.make CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.i
+.PHONY : Core/Src/FDCBootloader/FDCBootloader.cpp.i
+
+Core/Src/FDCBootloader/FDCBootloader.s: Core/Src/FDCBootloader/FDCBootloader.cpp.s
+.PHONY : Core/Src/FDCBootloader/FDCBootloader.s
+
+# target to generate assembly for a file
+Core/Src/FDCBootloader/FDCBootloader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/BLCU_NEW.elf.dir/build.make CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.s
+.PHONY : Core/Src/FDCBootloader/FDCBootloader.cpp.s
+
 Core/Src/main.obj: Core/Src/main.cpp.obj
 .PHONY : Core/Src/main.obj
 
@@ -304,6 +376,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... BLCU_NEW.elf"
 	@echo "... st-lib"
+	@echo "... Core/Src/BLCU/BLCU.obj"
+	@echo "... Core/Src/BLCU/BLCU.i"
+	@echo "... Core/Src/BLCU/BLCU.s"
+	@echo "... Core/Src/FDCBootloader/BootloaderTFTP.obj"
+	@echo "... Core/Src/FDCBootloader/BootloaderTFTP.i"
+	@echo "... Core/Src/FDCBootloader/BootloaderTFTP.s"
+	@echo "... Core/Src/FDCBootloader/FDCBootloader.obj"
+	@echo "... Core/Src/FDCBootloader/FDCBootloader.i"
+	@echo "... Core/Src/FDCBootloader/FDCBootloader.s"
 	@echo "... Core/Src/main.obj"
 	@echo "... Core/Src/main.i"
 	@echo "... Core/Src/main.s"

@@ -5,19 +5,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../Core/Src/BLCU/BLCU.cpp \
-../Core/Src/BLCU/Orders.cpp \
-../Core/Src/BLCU/StateMachine.cpp 
+../Core/Src/BLCU/BLCU.cpp 
 
 OBJS += \
-./Core/Src/BLCU/BLCU.o \
-./Core/Src/BLCU/Orders.o \
-./Core/Src/BLCU/StateMachine.o 
+./Core/Src/BLCU/BLCU.o 
 
 CPP_DEPS += \
-./Core/Src/BLCU/BLCU.d \
-./Core/Src/BLCU/Orders.d \
-./Core/Src/BLCU/StateMachine.d 
+./Core/Src/BLCU/BLCU.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -27,7 +21,7 @@ Core/Src/BLCU/%.o Core/Src/BLCU/%.su: ../Core/Src/BLCU/%.cpp Core/Src/BLCU/subdi
 clean: clean-Core-2f-Src-2f-BLCU
 
 clean-Core-2f-Src-2f-BLCU:
-	-$(RM) ./Core/Src/BLCU/BLCU.d ./Core/Src/BLCU/BLCU.o ./Core/Src/BLCU/BLCU.su ./Core/Src/BLCU/Orders.d ./Core/Src/BLCU/Orders.o ./Core/Src/BLCU/Orders.su ./Core/Src/BLCU/StateMachine.d ./Core/Src/BLCU/StateMachine.o ./Core/Src/BLCU/StateMachine.su
+	-$(RM) ./Core/Src/BLCU/BLCU.d ./Core/Src/BLCU/BLCU.o ./Core/Src/BLCU/BLCU.su
 
 .PHONY: clean-Core-2f-Src-2f-BLCU
 

@@ -167,7 +167,9 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_server.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_opts.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/iana.h \
- ../Core/Src/Runes/Runes.hpp ../Core/Src/Runes/Pins.hpp
+ ../Core/Inc/BLCU/Utilities/orders_data.hpp \
+ ../Core/Inc/BLCU/Utilities/Target.hpp ../Core/Src/Runes/Runes.hpp \
+ ../Core/Src/Runes/Pins.hpp
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -338,5 +340,7 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_server.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_opts.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/iana.h:
+../Core/Inc/BLCU/Utilities/orders_data.hpp:
+../Core/Inc/BLCU/Utilities/Target.hpp:
 ../Core/Src/Runes/Runes.hpp:
 ../Core/Src/Runes/Pins.hpp:

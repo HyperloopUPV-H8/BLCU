@@ -26,7 +26,9 @@ bool FDCB::get_version(uint8_t& version){
 	FDCAN::Packet packet = FDCAN::Packet();
 	version = 0;
 
-	FDCAN::transmit(FDCB::fdcan, FDCB::GET_VERSION, data, FDCAN::DLC::BYTES_64);
+	if (not FDCAN::transmit(FDCB::fdcan, FDCB::GET_VERSION, data, FDCAN::DLC::BYTES_64)){
+		return false;
+	}
 
 	if (not __wait_for_ack(FDCB::GET_VERSION, packet)) {
 		return false;

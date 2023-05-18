@@ -10,6 +10,11 @@
 
 //#ifdef HAL_ETH_MODULE_ENABLED
 //Variables:
+namespace BLCU {
+	extern void finish_write_read_order();
+}
+
+
 bool BTFTP::ready = false;
 
 BTFTP::Mode BTFTP::mode = BTFTP::Mode::NONE;
@@ -24,7 +29,7 @@ void BTFTP::on(BTFTP::Mode mode){
 
 void BTFTP::off(){
 	BTFTP::ready = false;
-	BTFTP::mode = BTFTP::Mode::NONE;;
+	BTFTP::mode = BTFTP::Mode::NONE;
 }
 
 void BTFTP::start(){
@@ -36,6 +41,8 @@ void BTFTP::start(){
 
 	if (error != ERR_OK) {
 		ErrorHandler("Unable to start TFTP server, error code: %lu.", error);
+		
+		return;
 	}
 
 	BTFTP::file->payload = (uint8_t*)malloc(SECTOR_SIZE_IN_BYTES);
@@ -49,28 +56,33 @@ void BTFTP::start(){
 }
 
 //Private:
-
 void* BTFTP::open(const char* fname, const char* mode, u8_t write){
 	if (not BTFTP::ready || write != (uint8_t)BTFTP::mode) {
+		BLCU::finish_write_read_order();
 		return nullptr;
 	}
 
 	const char* accepted_mode = "octet";
 	if (strcmp(mode, accepted_mode)) {
+		BLCU::finish_write_read_order();
 		return nullptr;
 	}
 	printf("File opened in %s mode.\n", accepted_mode);
 
-	uint8_t version = 0x0;;
+	uint8_t version = 0x0;
 
 	if (not FDCB::get_version(version)){
 		//TODO: WARNING: Bootloader not respondig, unable to start read/write operation!
 		printf("Bootloader not respondig, unable to start read/write operation!");
+		BLCU::finish_write_read_order();
 		return nullptr;
 	}
 
 	if (version != FDCB_CURRENT_VERSION) {
-		ErrorHandler("Mismatch in bootloader version, current version in host: 0x%X in target: 0x%X.", FDCB_CURRENT_VERSION, version);
+		//TODO: WARNING?
+		printf("Mismatch in bootloader version, current version in host: 0x%X in target: 0x%X.", FDCB_CURRENT_VERSION, version); 
+		// ErrorHandler("Mismatch in bootloader version, current version in host: 0x%X in target: 0x%X.", FDCB_CURRENT_VERSION, version);
+		BLCU::finish_write_read_order();
 		return nullptr;
 	}
 
