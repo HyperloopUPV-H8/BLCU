@@ -13,7 +13,7 @@
 #include "Utilities/orders_data.hpp"
 
 #define BLCU_IP 		"192.168.1.4"
-#define BLCU_MASK 		"255.255.0.0"
+#define BLCU_MASK 		"255.255.255.0"
 #define BLCU_GATEWAY 	"192.168.1.1"
 #define BLCU_PORT		((uint32_t)50500)
 
@@ -167,8 +167,10 @@ namespace BLCU {
     	BLCU::__send_to_bootmode(BLCU::orders_data.target);
 
     	BTFTP::on(BTFTP::Mode::READ);
-
+    	printf("Solicitud lectura\n");
     	BLCU::tcp_socket->send_order(ack);
+    	printf("ACK mandado!\n");
+
     }
 
     void write_program(){

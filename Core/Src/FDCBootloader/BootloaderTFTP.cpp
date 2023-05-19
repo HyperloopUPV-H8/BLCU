@@ -44,7 +44,7 @@ void BTFTP::start(){
 		
 		return;
 	}
-
+	BTFTP::file = new BTFTP::btftp_file_t();
 	BTFTP::file->payload = (uint8_t*)malloc(SECTOR_SIZE_IN_BYTES);
 	if (BTFTP::file->payload == nullptr) {
 		ErrorHandler("BLCU could not allocate enough memory for tftp file buffer");
@@ -116,7 +116,7 @@ int BTFTP::read(void* handle, void* buf, int bytes){
 
 	if (btftp_handle->file->pointer >= btftp_handle->file->max_pointer) {
 
-		if (btftp_handle->current_sector > 6) {
+		if (btftp_handle->current_sector > 5) {
 			return 0;
 		}else{
 			if (not FDCB::read_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
@@ -142,7 +142,7 @@ int BTFTP::write(void* handle, struct pbuf* p){
 
 
 	if (btftp_handle->file->pointer >= btftp_handle->file->max_pointer) {
-		if (btftp_handle->current_sector > 6) {
+		if (btftp_handle->current_sector > 5) {
 			return 1;
 		}else{
 			if (not FDCB::write_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {

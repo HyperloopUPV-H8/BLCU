@@ -44,6 +44,7 @@
 "./LWIP/App/lwip.o"
 "./LWIP/Target/ethernetif.o"
 "./Middlewares/Third_Party/LwIP/apps/mqtt/mqtt.o"
+"./Middlewares/Third_Party/LwIP/apps/sntp/sntp.o"
 "./Middlewares/Third_Party/LwIP/apps/tftp/tftp_server.o"
 "./Middlewares/Third_Party/LwIP/src/api/api_lib.o"
 "./Middlewares/Third_Party/LwIP/src/api/api_msg.o"

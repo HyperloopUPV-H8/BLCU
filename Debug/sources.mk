@@ -40,6 +40,7 @@ Drivers/STM32H7xx_HAL_Driver/Src \
 LWIP/App \
 LWIP/Target \
 Middlewares/Third_Party/LwIP/apps/mqtt \
+Middlewares/Third_Party/LwIP/apps/sntp \
 Middlewares/Third_Party/LwIP/apps/tftp \
 Middlewares/Third_Party/LwIP/src/api \
 Middlewares/Third_Party/LwIP/src/core \

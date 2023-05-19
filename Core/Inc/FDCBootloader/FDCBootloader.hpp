@@ -12,7 +12,7 @@
 #include "C++Utilities/CppUtils.hpp"
 
 
-#define FDCB_CURRENT_VERSION        ((uint8_t)0x03)
+#define FDCB_CURRENT_VERSION        ((uint8_t)0x05)
 
 #define FDCB_VERBOSE_LEVEL 			1
 #define FDCB_TIMEOUT_MS 			5000
