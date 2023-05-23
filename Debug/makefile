@@ -63,37 +63,37 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := BLCU
+BUILD_ARTIFACT_NAME := BLCU_NEW
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-BLCU.elf \
+BLCU_NEW.elf \
 
 MAP_FILES += \
-BLCU.map \
+BLCU_NEW.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-BLCU.list \
+BLCU_NEW.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: BLCU.elf secondary-outputs
+main-build: BLCU_NEW.elf secondary-outputs
 
 dependents:
-	-cd C:/Users/pablo/Desktop/Hyperloop\ UPV/H8/TESTING/ST-LIB/Debug && $(MAKE) all
+	-cd /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Debug && $(MAKE) clean all
 
 # Tool invocations
-BLCU.elf BLCU.map: $(OBJS) $(USER_OBJS) C:/Users/pablo/Desktop/Hyperloop\ UPV/H8/TESTING/ST-LIB/Debug/libST-LIB.a C:\Users\pablo\Desktop\Hyperloop\ UPV\H8\TESTING\BLCU\STM32H723ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "BLCU.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\Users\pablo\Desktop\Hyperloop UPV\H8\TESTING\BLCU\STM32H723ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="BLCU.map" -Wl,--gc-sections -static -L"C:\Users\pablo\Desktop\Hyperloop UPV\H8\TESTING\ST-LIB\Debug" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+BLCU_NEW.elf BLCU_NEW.map: $(OBJS) $(USER_OBJS) /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Debug/libST-LIB.a /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/STM32H723ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "BLCU_NEW.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/STM32H723ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="BLCU_NEW.map" -Wl,--gc-sections -static -L"/home/predawnia/Desktop/Hyperloop UPV/H8/ST-LIB/Debug" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -102,14 +102,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-BLCU.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "BLCU.list"
+BLCU_NEW.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "BLCU_NEW.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) BLCU.elf BLCU.list BLCU.map default.size.stdout
+	-$(RM) BLCU_NEW.elf BLCU_NEW.list BLCU_NEW.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
@@ -122,6 +122,6 @@ warn-no-linker-script-specified:
 	@echo 'Warning: No linker script specified. Check the linker settings in the build configuration.'
 
 .PHONY: all clean dependents main-build fail-specified-linker-script-missing warn-no-linker-script-specified
-C:/Users/pablo/Desktop/Hyperloop\ UPV/H8/TESTING/ST-LIB/Debug/libST-LIB.a:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Debug/libST-LIB.a:
 
 -include ../makefile.targets
