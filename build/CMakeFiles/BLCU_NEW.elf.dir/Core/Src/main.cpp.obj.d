@@ -390,6 +390,9 @@ CMakeFiles/BLCU_NEW.elf.dir/Core/Src/main.cpp.obj: \
  /opt/malva/ST-LIB/Inc/HALAL/Services/Communication/Ethernet/Ethernet.hpp \
  /opt/malva/ST-LIB/Inc/HALAL/Services/Communication/FDCAN/FDCAN.hpp \
  /opt/malva/ST-LIB/Inc/HALAL/Services/Communication/SNTP/SNTP.hpp \
+ /opt/malva/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/apps/sntp.h \
+ /opt/malva/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/apps/sntp_opts.h \
+ /opt/malva/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/prot/iana.h \
  /opt/malva/ST-LIB/Inc/HALAL/Services/CORDIC/CORDIC.hpp \
  /opt/malva/ST-LIB/Inc/ST-LIB_LOW/ST-LIB_LOW.hpp \
  /opt/malva/ST-LIB/Inc/ST-LIB_LOW/Clocks/Counter.hpp \
@@ -427,7 +430,6 @@ CMakeFiles/BLCU_NEW.elf.dir/Core/Src/main.cpp.obj: \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/FDCBootloader/BootloaderTFTP.hpp \
  /opt/malva/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_server.h \
  /opt/malva/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_opts.h \
- /opt/malva/ST-LIB/Middlewares/Third_Party/LwIP/src/include/lwip/prot/iana.h \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/BLCU/Utilities/orders_data.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Inc/BLCU/Utilities/Target.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/Core/Src/Runes/Runes.hpp \

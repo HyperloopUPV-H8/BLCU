@@ -113,8 +113,6 @@ bool FDCB::write_memory(uint8_t sector, uint8_t* data){
 		return false;
 	}
 
-	//HASTA AQUI ES IGUAL
-
 	index = 0;
 	counter = 1;
 	for (i = 0; i < 2048; ++i) {
@@ -137,7 +135,6 @@ bool FDCB::write_memory(uint8_t sector, uint8_t* data){
 
 	}
 
-	//A PARTIR DE AQUI ES IGUAL
 	if (not __wait_for_ack(FDCB::WRITE_MEMORY, packet)) {
 		return false;
 	}
@@ -243,88 +240,11 @@ void FDCB::__copy_data_from_packet(FDCAN::Packet& packet, uint8_t* data){
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
- bool FDCB::__write_memory_order(uint32_t address, vector<uint8_t> data){
-//     vector<uint8_t> msg_content = {};
-//
-//     FDCB::__addr_to_byte_vector(msg_content, address);
-//
-//     msg_content.push_back(data.size() == 256 ? 255 : data.size());
-//
-//     if (not FDCAN::transmit(fdcan, FDCB::BootLoaderOrders::WRITE_MEMORY, msg_content, FDCAN::DLC::BYTES_64))
-//         return false;
-//
-//
-//     optional<FDCAN::Packet> res = FDCB::__wait_for_bootloader_message(FDCB::BootLoaderOrders::ACK);
-//     if (!res.has_value())
-//         return false;
-//
-//
-//     while(data.size() > 0){
-//
-//         if (data.size() > 63) {
-//             vector<uint8_t> sub_data(data.begin(), data.begin() + 63);
-//             if (not FDCAN::transmit(FDCB::fdcan, FDCB::BootLoaderOrders::WRITE_MEMORY, sub_data, FDCAN::DLC::BYTES_64))
-//                 return false;
-//
-//
-//             data = {data.begin() + 64, data.end()};
-//         }else{
-//        	 //TODO: revisar esto
-//            // vector<uint8_t> sub_data(data.begin(), data.begin() + data.size() - 1);
-//             if (not FDCAN::transmit(FDCB::fdcan, FDCB::BootLoaderOrders::WRITE_MEMORY, data, FDCAN::DLC::BYTES_64))
-//                 return false;
-//
-//             break;
-//         }
-//     }
-//
-//     res = FDCB::__wait_for_bootloader_message(FDCB::BootLoaderOrders::ACK);
-//     if (!res.has_value()) {
-//         return false;
-//     }
-//
-//     return true;
- }
-
- bool FDCB::__wait_for_bootloader_command_response(vector<uint8_t>& data){
-//     optional<FDCAN::Packet> msg =  FDCB::__wait_for_bootloader_message(FDCB::BootLoaderOrders::ACK);
-//     if (!msg.has_value())
-//         return false;
-//
-//     msg = FDCB::__wait_for_bootloader_message();
-//     if (!msg.has_value())
-//         return false;
-//
-//     while(msg.value().rx_data[0] != FDCB::BootLoaderOrders::NACK){
-//         for(uint16_t i = 0; i < msg.value().data_length; i++)
-//             data.push_back(msg.value().rx_data[i]);
-//
-//         msg = FDCB::__wait_for_bootloader_message();
-//         if (!msg.has_value())
-//             return false;
-//     }
-//
-//     return true;
- }
-
-
- void FDCB::__addr_to_byte_vector(vector<uint8_t>& v, uint32_t addr){
-     v.push_back( addr >> 24 );
-     v.push_back( addr >> 16 );
-     v.push_back( addr >>  8 );
-     v.push_back( addr       );
- }
+void FDCB::__addr_to_byte_vector(vector<uint8_t>& v, uint32_t addr){
+	v.push_back( addr >> 24 );
+	v.push_back( addr >> 16 );
+	v.push_back( addr >>  8 );
+	v.push_back( addr       );
+}
 
 

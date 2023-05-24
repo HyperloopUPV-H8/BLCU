@@ -166,24 +166,10 @@ CMakeFiles/BLCU_NEW.elf.dir/Core/Startup/startup_stm32h723zgtx.s.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling ASM source to assembly CMakeFiles/BLCU_NEW.elf.dir/Core/Startup/startup_stm32h723zgtx.s.s"
 	/usr/local/bin/arm-none-eabi-gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -S "/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/Core/Startup/startup_stm32h723zgtx.s" -o CMakeFiles/BLCU_NEW.elf.dir/Core/Startup/startup_stm32h723zgtx.s.s
 
-CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj: CMakeFiles/BLCU_NEW.elf.dir/flags.make
-CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj: ../Core/Src/BLCU/BLCU.cpp
-CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj: CMakeFiles/BLCU_NEW.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj"
-	/usr/local/bin/arm-none-eabi-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj -MF CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj.d -o CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj -c "/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/Core/Src/BLCU/BLCU.cpp"
-
-CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.i"
-	/usr/local/bin/arm-none-eabi-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/Core/Src/BLCU/BLCU.cpp" > CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.i
-
-CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.s"
-	/usr/local/bin/arm-none-eabi-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/Core/Src/BLCU/BLCU.cpp" -o CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.s
-
 CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj: CMakeFiles/BLCU_NEW.elf.dir/flags.make
 CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj: ../Core/Src/FDCBootloader/FDCBootloader.cpp
 CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj: CMakeFiles/BLCU_NEW.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj"
 	/usr/local/bin/arm-none-eabi-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj -MF CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj.d -o CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj -c "/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/Core/Src/FDCBootloader/FDCBootloader.cpp"
 
 CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.i: cmake_force
@@ -197,7 +183,7 @@ CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.s: cmake_fo
 CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj: CMakeFiles/BLCU_NEW.elf.dir/flags.make
 CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj: ../Core/Src/FDCBootloader/BootloaderTFTP.cpp
 CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj: CMakeFiles/BLCU_NEW.elf.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj"
 	/usr/local/bin/arm-none-eabi-g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj -MF CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj.d -o CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj -c "/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/Core/Src/FDCBootloader/BootloaderTFTP.cpp"
 
 CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.i: cmake_force
@@ -217,7 +203,6 @@ BLCU_NEW_elf_OBJECTS = \
 "CMakeFiles/BLCU_NEW.elf.dir/Core/Src/sysmem.c.obj" \
 "CMakeFiles/BLCU_NEW.elf.dir/Core/Src/system_stm32h7xx.c.obj" \
 "CMakeFiles/BLCU_NEW.elf.dir/Core/Startup/startup_stm32h723zgtx.s.obj" \
-"CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj" \
 "CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj" \
 "CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj"
 
@@ -231,13 +216,12 @@ BLCU_NEW.elf: CMakeFiles/BLCU_NEW.elf.dir/Core/Src/stm32h7xx_it.c.obj
 BLCU_NEW.elf: CMakeFiles/BLCU_NEW.elf.dir/Core/Src/sysmem.c.obj
 BLCU_NEW.elf: CMakeFiles/BLCU_NEW.elf.dir/Core/Src/system_stm32h7xx.c.obj
 BLCU_NEW.elf: CMakeFiles/BLCU_NEW.elf.dir/Core/Startup/startup_stm32h723zgtx.s.obj
-BLCU_NEW.elf: CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj
 BLCU_NEW.elf: CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj
 BLCU_NEW.elf: CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj
 BLCU_NEW.elf: CMakeFiles/BLCU_NEW.elf.dir/build.make
 BLCU_NEW.elf: /opt/malva/ST-LIB/build/libst-lib.a
 BLCU_NEW.elf: CMakeFiles/BLCU_NEW.elf.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable BLCU_NEW.elf"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/predawnia/Desktop/Hyperloop UPV/H8/BLCU_NEW/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable BLCU_NEW.elf"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/BLCU_NEW.elf.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

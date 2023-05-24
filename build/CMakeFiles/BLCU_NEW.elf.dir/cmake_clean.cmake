@@ -1,8 +1,6 @@
 file(REMOVE_RECURSE
   "BLCU_NEW.elf"
   "BLCU_NEW.elf.pdb"
-  "CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj"
-  "CMakeFiles/BLCU_NEW.elf.dir/Core/Src/BLCU/BLCU.cpp.obj.d"
   "CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj"
   "CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/BootloaderTFTP.cpp.obj.d"
   "CMakeFiles/BLCU_NEW.elf.dir/Core/Src/FDCBootloader/FDCBootloader.cpp.obj"

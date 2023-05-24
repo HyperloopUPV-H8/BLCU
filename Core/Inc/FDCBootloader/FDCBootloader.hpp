@@ -67,10 +67,5 @@ private:
 	static void __copy_data_from_packet(FDCAN::Packet& packet, uint8_t* data);
 	static bool __send_ack(uint8_t order);
 	static bool __send_nack(uint8_t order);
-
-
-	 static bool __write_memory_order(uint32_t address, vector<uint8_t> data);
-	 static bool __wait_for_bootloader_command_response(vector<uint8_t>& data);
-
-	 static void __addr_to_byte_vector(vector<uint8_t>& v, uint32_t addr);
+	static void __addr_to_byte_vector(vector<uint8_t>& v, uint32_t addr);
 };

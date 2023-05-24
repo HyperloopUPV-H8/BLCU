@@ -18,7 +18,6 @@ add_executable(
   Core/Src/sysmem.c
   Core/Src/system_stm32h7xx.c
   Core/Startup/startup_stm32h723zgtx.s
-  Core/Src/BLCU/BLCU.cpp
   Core/Src/FDCBootloader/FDCBootloader.cpp
   Core/Src/FDCBootloader/BootloaderTFTP.cpp
   )
