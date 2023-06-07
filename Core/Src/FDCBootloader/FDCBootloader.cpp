@@ -12,12 +12,8 @@ bool FDCB::ready = false;
 
 
 void FDCB::set_up(FDCAN::Peripheral&  fdcan){
-	optional<uint8_t> temp_fdcan = FDCAN::inscribe(fdcan);
-	if (not temp_fdcan) {
-		ErrorHandler("Unable to inscribe FDCAN %u", fdcan);
-		return;
-	}
-	FDCB::fdcan = temp_fdcan.value();
+
+	FDCB::fdcan = FDCAN::inscribe(fdcan);
 	FDCB::ready = true;
 }
 

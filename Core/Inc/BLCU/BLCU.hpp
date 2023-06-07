@@ -314,15 +314,7 @@ namespace BLCU {
     }
 
     void __set_up_fdcan(){
-    	optional<uint8_t> fdcan_temporal = FDCAN::inscribe(FDCAN::fdcan1);
-
-    	if (not fdcan_temporal.has_value())
-    	{
-    		ErrorHandler("Unable to inscribe fdcan1");
-    		return;
-    	}
-
-    	BLCU::fdcan = fdcan_temporal.value();
+    	BLCU::fdcan = FDCAN::inscribe(FDCAN::fdcan1);
     }
 
     void __set_up_ethernet(){

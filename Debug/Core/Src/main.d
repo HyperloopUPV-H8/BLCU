@@ -118,6 +118,7 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/init.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/netif.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/Communication/Ethernet/Ethernet.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/Packets/Packet.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/Packets/PacketValue.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/Concepts/Concepts.hpp \
@@ -126,19 +127,25 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/Packets/Order.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/Packets/OrderProtocol.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/Communication/Ethernet/TCP/Socket.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/Communication/Ethernet/Ethernet.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/Communication/FDCAN/FDCAN.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/Communication/SNTP/SNTP.hpp \
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/sntp.h \
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/sntp_opts.h \
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/iana.h \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/CORDIC/CORDIC.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/ST-LIB_LOW.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Clocks/Counter.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Clocks/Stopwatch.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/LinearSensor/LinearSensor.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/Sensor/Sensor.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/LinearSensor/FilteredLinearSensor.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/MovingAverage.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/../ControlSystem.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/../ControlBlock.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/StateMachine/StateMachine.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/DigitalOutput/DigitalOutput.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/HalfBridge/HalfBridge.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Math/Math.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/Sensor/Sensor.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/DigitalSensor/DigitalSensor.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/SensorInterrupt/SensorInterrupt.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/LookupSensor/LookupSensor.hpp \
@@ -147,7 +154,6 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/Protection.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/Boundary.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/MeanCalculator.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/../ControlBlock.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/ProtectionManager.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/Notification.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/BoardID/BoardID.hpp \
@@ -156,17 +162,16 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/Adder.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/Derivator.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/Integrator.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/LevitationPositionCalculator.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/MovingAverage.hpp \
- /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/../ControlSystem.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/PI.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/PID.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/Saturator.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/MatrixMultiplier.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/FlashStorer/FlashStorer.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/FlashStorer/FlashVariable.hpp \
  ../Core/Inc/FDCBootloader/FDCBootloader.hpp \
  ../Core/Inc/FDCBootloader/BootloaderTFTP.hpp \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_server.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_opts.h \
- ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/iana.h \
  ../Core/Inc/BLCU/Utilities/orders_data.hpp \
  ../Core/Inc/BLCU/Utilities/Target.hpp ../Core/Src/Runes/Runes.hpp \
  ../Core/Src/Runes/Pins.hpp
@@ -291,6 +296,7 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 ../Middlewares/Third_Party/LwIP/src/include/lwip/init.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/netif.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/Communication/Ethernet/Ethernet.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/Packets/Packet.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/Packets/PacketValue.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/Concepts/Concepts.hpp:
@@ -299,19 +305,25 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/Packets/Order.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/Packets/OrderProtocol.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/Communication/Ethernet/TCP/Socket.hpp:
-/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/Communication/Ethernet/Ethernet.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/Communication/FDCAN/FDCAN.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/Communication/SNTP/SNTP.hpp:
+../Middlewares/Third_Party/LwIP/src/include/lwip/apps/sntp.h:
+../Middlewares/Third_Party/LwIP/src/include/lwip/apps/sntp_opts.h:
+../Middlewares/Third_Party/LwIP/src/include/lwip/prot/iana.h:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Services/CORDIC/CORDIC.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/ST-LIB_LOW.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Clocks/Counter.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Clocks/Stopwatch.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/LinearSensor/LinearSensor.hpp:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/Sensor/Sensor.hpp:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/LinearSensor/FilteredLinearSensor.hpp:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/MovingAverage.hpp:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/../ControlSystem.hpp:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/../ControlBlock.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/StateMachine/StateMachine.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/DigitalOutput/DigitalOutput.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/HalfBridge/HalfBridge.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Math/Math.hpp:
-/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/Sensor/Sensor.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/DigitalSensor/DigitalSensor.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/SensorInterrupt/SensorInterrupt.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/LookupSensor/LookupSensor.hpp:
@@ -320,7 +332,6 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/Protection.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/Boundary.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/MeanCalculator.hpp:
-/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/../ControlBlock.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/ProtectionManager.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/Notification.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/BoardID/BoardID.hpp:
@@ -329,17 +340,16 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/Adder.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/Derivator.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/Integrator.hpp:
-/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/LevitationPositionCalculator.hpp:
-/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/MovingAverage.hpp:
-/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/../ControlSystem.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/PI.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/PID.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/Saturator.hpp:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Control/Blocks/MatrixMultiplier.hpp:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/FlashStorer/FlashStorer.hpp:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/FlashStorer/FlashVariable.hpp:
 ../Core/Inc/FDCBootloader/FDCBootloader.hpp:
 ../Core/Inc/FDCBootloader/BootloaderTFTP.hpp:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_server.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_opts.h:
-../Middlewares/Third_Party/LwIP/src/include/lwip/prot/iana.h:
 ../Core/Inc/BLCU/Utilities/orders_data.hpp:
 ../Core/Inc/BLCU/Utilities/Target.hpp:
 ../Core/Src/Runes/Runes.hpp:

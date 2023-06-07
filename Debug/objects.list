@@ -1,4 +1,3 @@
-"./Core/Src/BLCU/BLCU.o"
 "./Core/Src/FDCBootloader/BootloaderTFTP.o"
 "./Core/Src/FDCBootloader/FDCBootloader.o"
 "./Core/Src/main.o"
