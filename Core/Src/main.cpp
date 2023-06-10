@@ -4,10 +4,24 @@
 #include "BLCU/BLCU.hpp"
 #include "Runes/Runes.hpp"
 
+//TODO: Cosas claras que falta es pasar las ordenes estas a el archivo correspondiente y comprobar que no mueren
 
 HeapOrder ack = {
+		3,
+};
+
+
+HeapOrder nack = {
 		4,
 };
+
+HeapOrder get_version_order = {
+		703,
+		BLCU::get_version,
+		&BLCU::orders_data.target,
+		&BLCU::orders_data.version,
+};
+
 
 int main(void)
 {
@@ -27,13 +41,6 @@ int main(void)
 			702,
 			BLCU::erase_program,
 			&BLCU::orders_data.target,
-	};
-
-	HeapOrder get_version_order = {
-			703,
-			BLCU::get_version,
-			&BLCU::orders_data.target,
-			&BLCU::orders_data.version,
 	};
 
 	HeapOrder reset_all_order = {

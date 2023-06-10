@@ -51,6 +51,8 @@ public:
 
 
 public:
+
+
 	static btftp_file_t* file;
 
 	static void start();
@@ -61,6 +63,8 @@ public:
 
 private:
 	static bool ready;
+
+	static bool error_ok;
 
 	static BTFTP::Mode mode;
 

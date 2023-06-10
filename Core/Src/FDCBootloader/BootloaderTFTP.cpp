@@ -11,10 +11,10 @@
 //#ifdef HAL_ETH_MODULE_ENABLED
 //Variables:
 namespace BLCU {
-	extern void finish_write_read_order();
+	extern void finish_write_read_order(bool error_ok);
 }
 
-
+bool BTFTP::error_ok = true;
 bool BTFTP::ready = false;
 
 BTFTP::Mode BTFTP::mode = BTFTP::Mode::NONE;
@@ -58,13 +58,13 @@ void BTFTP::start(){
 //Private:
 void* BTFTP::open(const char* fname, const char* mode, u8_t write){
 	if (not BTFTP::ready || write != (uint8_t)BTFTP::mode) {
-		BLCU::finish_write_read_order();
+		BLCU::finish_write_read_order(false);
 		return nullptr;
 	}
 
 	const char* accepted_mode = "octet";
 	if (strcmp(mode, accepted_mode)) {
-		BLCU::finish_write_read_order();
+		BLCU::finish_write_read_order(false);
 		return nullptr;
 	}
 	printf("File opened in %s mode.\n", accepted_mode);
@@ -73,20 +73,18 @@ void* BTFTP::open(const char* fname, const char* mode, u8_t write){
 
 	if (not FDCB::get_version(version)){
 		//TODO: WARNING: Bootloader not respondig, unable to start read/write operation!
-		printf("Bootloader not respondig, unable to start read/write operation!");
-		BLCU::finish_write_read_order();
+		ErrorHandler("Bootloader not respondig, unable to start read/write operation!");
+		BLCU::finish_write_read_order(false);
 		return nullptr;
 	}
 
 	if (version != FDCB_CURRENT_VERSION) {
 		//TODO: WARNING?
-		printf("Mismatch in bootloader version, current version in host: 0x%X in target: 0x%X.", FDCB_CURRENT_VERSION, version); 
+		ErrorHandler("Mismatch in bootloader version, current version in host: 0x%X in target: 0x%X.", FDCB_CURRENT_VERSION, version);
 		// ErrorHandler("Mismatch in bootloader version, current version in host: 0x%X in target: 0x%X.", FDCB_CURRENT_VERSION, version);
-		BLCU::finish_write_read_order();
+		BLCU::finish_write_read_order(false);
 		return nullptr;
 	}
-
-
 
 	uint32_t address = FLASH_SECTOR0_START_ADDRESS;
 	BTFTP::BHandle* handle = new BTFTP::BHandle(string(fname), string(mode), write, address);
@@ -105,12 +103,13 @@ void* BTFTP::open(const char* fname, const char* mode, u8_t write){
 
 void BTFTP::close(void* handle){
 	free(handle);
-	BLCU::finish_write_read_order();
+	BLCU::finish_write_read_order(error_ok);
 }
 
 int BTFTP::read(void* handle, void* buf, int bytes){
 	BTFTP::BHandle* btftp_handle = (BTFTP::BHandle*)handle;
 	if (btftp_handle->read_write == 1) {
+		error_ok = false;
 		return -1;
 	}
 
@@ -120,6 +119,7 @@ int BTFTP::read(void* handle, void* buf, int bytes){
 			return 0;
 		}else{
 			if (not FDCB::read_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
+				error_ok = false;
 				return -1;
 			}
 			btftp_handle->file->pointer = 0;
@@ -136,6 +136,7 @@ int BTFTP::read(void* handle, void* buf, int bytes){
 int BTFTP::write(void* handle, struct pbuf* p){
 	BTFTP::BHandle* btftp_handle = (BTFTP::BHandle*)handle;
 	if (btftp_handle->read_write == 0) {
+		error_ok = false;
 		return -1;
 	}
 
@@ -146,6 +147,7 @@ int BTFTP::write(void* handle, struct pbuf* p){
 			return 1;
 		}else{
 			if (not FDCB::write_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
+				error_ok = false;
 				return -1;
 			}
 			btftp_handle->file->pointer = 0;
@@ -158,6 +160,7 @@ int BTFTP::write(void* handle, struct pbuf* p){
 
 	if (p->len < TFTP_MAX_DATA_SIZE) {
 		if (not FDCB::write_memory(btftp_handle->current_sector, btftp_handle->file->payload)) {
+			error_ok = false;
 			return -1;
 		}
 		return 0;

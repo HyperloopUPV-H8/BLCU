@@ -76,6 +76,9 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/dhcp.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h \
  ../LWIP/Target/ethernetif.h ../Core/Inc/BLCU/BLCU.hpp \
+ ../Core/Inc/BLCU/BLCU_Orders/BLCU_Orders.hpp \
+ ../Core/Inc/BLCU/BLCU_Orders/BLCU_PrivateFunctions.hpp \
+ ../Core/Inc/BLCU/BLCU_Definition/BLCU_Definition.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/HALAL.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/HALconfig/HALconfig.hpp \
@@ -173,8 +176,13 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_server.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_opts.h \
  ../Core/Inc/BLCU/Utilities/orders_data.hpp \
- ../Core/Inc/BLCU/Utilities/Target.hpp ../Core/Src/Runes/Runes.hpp \
- ../Core/Src/Runes/Pins.hpp
+ ../Core/Inc/BLCU/Utilities/Target.hpp \
+ ../Core/Inc/BLCU/BLCU_Orders/BLCU_PublicFunctions.hpp \
+ ../Core/Inc/BLCU/BLCU_Protections/BLCU_Protections.hpp \
+ ../Core/Inc/BLCU/BLCU_SetUps/BLCU_SetUps.hpp \
+ ../Core/Inc/BLCU/BLCU_Starts/BLCU_Starts.hpp \
+ ../Core/Inc/BLCU/BLCU_StateMachine/BLCU_StateMachine.hpp \
+ ../Core/Src/Runes/Runes.hpp ../Core/Src/Runes/Pins.hpp
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -254,6 +262,9 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 ../Middlewares/Third_Party/LwIP/src/include/lwip/timeouts.h:
 ../LWIP/Target/ethernetif.h:
 ../Core/Inc/BLCU/BLCU.hpp:
+../Core/Inc/BLCU/BLCU_Orders/BLCU_Orders.hpp:
+../Core/Inc/BLCU/BLCU_Orders/BLCU_PrivateFunctions.hpp:
+../Core/Inc/BLCU/BLCU_Definition/BLCU_Definition.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/HALAL.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/HALAL/Models/HALconfig/HALconfig.hpp:
@@ -352,5 +363,10 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/tftp_opts.h:
 ../Core/Inc/BLCU/Utilities/orders_data.hpp:
 ../Core/Inc/BLCU/Utilities/Target.hpp:
+../Core/Inc/BLCU/BLCU_Orders/BLCU_PublicFunctions.hpp:
+../Core/Inc/BLCU/BLCU_Protections/BLCU_Protections.hpp:
+../Core/Inc/BLCU/BLCU_SetUps/BLCU_SetUps.hpp:
+../Core/Inc/BLCU/BLCU_Starts/BLCU_Starts.hpp:
+../Core/Inc/BLCU/BLCU_StateMachine/BLCU_StateMachine.hpp:
 ../Core/Src/Runes/Runes.hpp:
 ../Core/Src/Runes/Pins.hpp:

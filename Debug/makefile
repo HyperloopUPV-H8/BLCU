@@ -88,7 +88,7 @@ all: main-build
 main-build: BLCU_NEW.elf secondary-outputs
 
 dependents:
-	-cd /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Debug && $(MAKE) clean all
+	-cd /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Debug && $(MAKE) all
 
 # Tool invocations
 BLCU_NEW.elf BLCU_NEW.map: $(OBJS) $(USER_OBJS) /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Debug/libST-LIB.a /home/predawnia/Desktop/Hyperloop\ UPV/H8/BLCU_NEW/STM32H723ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
