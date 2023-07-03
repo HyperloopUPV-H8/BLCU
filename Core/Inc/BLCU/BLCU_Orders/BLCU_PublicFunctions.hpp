@@ -18,6 +18,11 @@ namespace BLCU{
 	}
 
 	void get_version(){
+		if(BLCU::specific_state_machine.current_state != BLCU::SpecificStates::READY){
+			BLCU::tcp_socket->send_order(nack);
+			return;
+		}
+
 		BLCU::specific_state_machine.force_change_state(BOOTING);
 
 		uint8_t temporal_value = 0;
@@ -34,6 +39,11 @@ namespace BLCU{
 	}
 
 	void read_program(){
+		if(BLCU::specific_state_machine.current_state != BLCU::SpecificStates::READY){
+			BLCU::tcp_socket->send_order(nack);
+			return;
+		}
+
 		BLCU::specific_state_machine.force_change_state(BOOTING);
 
 		BTFTP::on(BTFTP::Mode::READ);
@@ -42,6 +52,11 @@ namespace BLCU{
 	}
 
 	void write_program(){
+		if(BLCU::specific_state_machine.current_state != BLCU::SpecificStates::READY){
+			BLCU::tcp_socket->send_order(nack);
+			return;
+		}
+
 		BLCU::specific_state_machine.force_change_state(BOOTING);
 
 		BTFTP::on(BTFTP::Mode::WRITE);
@@ -50,6 +65,11 @@ namespace BLCU{
 	}
 
 	void erase_program(){
+		if(BLCU::specific_state_machine.current_state != BLCU::SpecificStates::READY){
+			BLCU::tcp_socket->send_order(nack);
+			return;
+		}
+
 		BLCU::specific_state_machine.force_change_state(BOOTING);
 
 		if(not FDCB::erase_memory()){

@@ -9,6 +9,7 @@
 #define BLCU_MASK 		"255.255.255.0"
 #define BLCU_GATEWAY 	"192.168.1.1"
 #define BLCU_PORT		((uint32_t)50500)
+#define BLCU_ID         ((uint8_t)1)
 
 extern HeapOrder ack;
 extern HeapOrder nack;

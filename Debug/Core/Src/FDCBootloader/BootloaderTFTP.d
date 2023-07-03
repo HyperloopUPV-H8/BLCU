@@ -103,6 +103,8 @@ Core/Src/FDCBootloader/BootloaderTFTP.o: \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/SensorInterrupt/SensorInterrupt.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/LookupSensor/LookupSensor.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/EncoderSensor/EncoderSensor.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/PWMSensor/PWMSensor.hpp \
+ /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/NTC/NTC.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/ST-LIB_HIGH.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/Protection.hpp \
  /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/Boundary.hpp \
@@ -224,6 +226,8 @@ Core/Src/FDCBootloader/BootloaderTFTP.o: \
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/SensorInterrupt/SensorInterrupt.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/LookupSensor/LookupSensor.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/EncoderSensor/EncoderSensor.hpp:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/PWMSensor/PWMSensor.hpp:
+/home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_LOW/Sensors/NTC/NTC.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/ST-LIB_HIGH.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/Protection.hpp:
 /home/predawnia/Desktop/Hyperloop\ UPV/H8/ST-LIB/Inc/ST-LIB_HIGH/Protections/Boundary.hpp:

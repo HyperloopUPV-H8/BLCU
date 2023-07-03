@@ -21,6 +21,7 @@ namespace BLCU{
     {
         BLCU::__set_up_peripherals();
         BLCU::__set_up_state_machine();
+        ProtectionManager::link_state_machine(BLCU::general_state_machine, BLCU_ID);
         BLCU::__set_up_protections();
     }
 
